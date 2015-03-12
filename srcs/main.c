@@ -202,17 +202,67 @@ void		ft_putfilesdebug(t_file *head)
 	ptr = head;
 	while (ptr)
 	{
-		// dprintf(1, "%s\n", ptr->name);
-		dprintf(1, "%s, %s, %s, %s, %i, %s\n", NULL, ptr->permissions, ptr->owner, ptr->group, ptr->date, ptr->name);
+		write(1, ptr->permissions, ft_strlen(ptr->permissions));
+		write(1, " ", 1);
+		write(1, ptr->hard_links, ft_strlen(ptr->hard_links));
+		write(1, " ", 1);
+		write(1, ptr->owner, ft_strlen(ptr->owner));
+		write(1, " ", 1);
+		write(1, ptr->group, ft_strlen(ptr->group));
+		write(1, " ", 1);
+		write(1, ptr->psize, ft_strlen(ptr->psize));
+		write(1, " ", 1);
+		write(1, ptr->pdate, ft_strlen(ptr->pdate));
+		write(1, " ", 1);
+		write(1, ptr->name, ft_strlen(ptr->name));
+		write(1, "\n", 1);
 		ptr = ptr->next;
 	}
 	write (1, "\n", 1);
+}
+
+char		**ft_extractpaths(t_file *head)
+{
+	int 	len;
+	t_file	*ptr;
+	char	**paths;
+	char	**p;
+
+	len = 0;
+	ptr = head;
+	while (ptr && ++len)
+		ptr = ptr->next;
+	if (!(paths = (char **)malloc(sizeof(char *) * (len + 1))))
+		return (NULL);
+	p = paths;
+	ptr = head;
+	while (ptr)
+	{
+		*p++ = ft_strdup(ptr->name);
+		ptr = ptr->next;
+	}
+	*p = NULL;
+	return (paths);
+}
+
+void		ft_freefiles(t_file **head)
+{
+	free((*head)->permissions);
+	free((*head)->hard_links);
+	free((*head)->owner);
+	free((*head)->group);
+	free((*head)->name);
+	free((*head)->path);
+	free((*head)->psize);
+	free((*head)->pdate);
+	free(*head);
 }
 
 void		ft_manage_first(char **args, char flags)
 {
 	t_paths	*paths;
 	char	**ptr;
+	char	**p;
 	t_file	*files;
 	t_file	*dirs;
 
@@ -228,10 +278,22 @@ void		ft_manage_first(char **args, char flags)
 	ft_cleanpath(&paths);
 	// ft_putpath(paths);
 	ft_split_order_type_one(paths, &files, &dirs, flags);
-	dprintf(1, "FILES :\n");
 	ft_putfilesdebug(files);
-	dprintf(1, "DIRS :\n");
-	ft_putfilesdebug(dirs);
+	ptr = ft_extractpaths(dirs);
+	ft_freefiles(&files);
+	ft_freefiles(&dirs);
+	p = ptr;
+	while (*p)
+	{
+		write(1, *p, ft_strlen(*p));
+		write(1, ":\n", 2);
+		write(1, "LS\n\n", 4);
+		free(*p);
+		p++;
+	}
+	free(ptr);
+	// dprintf(1, "DIRS :\n");
+	// ft_putfilesdebug(dirs);
 }
 
 int			main(int ac, char **av)
@@ -248,7 +310,6 @@ int			main(int ac, char **av)
 		*av = ft_strdup(".");
 		*(av + 1) = NULL;
 	}
-	// ft_testflags(flags);
 	ft_manage_first(av, flags);
 	return (0);
 }
