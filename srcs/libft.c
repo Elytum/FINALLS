@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_getflags.c                                      :+:      :+:    :+:   */
+/*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,52 +10,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/stat.h>
 #include <stdlib.h>
-#include "../includes/ft_ls.h"
 
-void			ft_putfiles(char **av)
+size_t				ft_strlen(char *str)
 {
-	char		**ptr;
+	char			*ptr;
 
-	ptr = av;
+	ptr = str;
 	while (*ptr)
-	{
-		write(1, *ptr, ft_strlen(*ptr));
-		write(1, "\n", 1);
 		ptr++;
-	}
+	return (ptr - str);
 }
 
-void			ft_manage_first(char **args, char flags)
+char				*ft_strdup(char *str)
 {
-	t_paths			*paths;
-	char			**ptr;
+	register char	*strnew;
+	register char	*ptr;
 
-	paths = NULL;
-	ptr = args;
-	while (*ptr)
-	{
-		ft_addpath(&paths, *ptr);
-		ptr++;
-	}
-	ft_cleanpath(&paths);
-	ft_putpath(paths);
-	(void)flags;
+	if (!(strnew = (char *)malloc(sizeof(char) * ft_strlen(str) + 1)))
+		return (NULL);
+	ptr = strnew;
+	while (*str)
+		*ptr++ = *str++;
+	*ptr = '\0';
+	return (strnew);
 }
 
-int				main(int ac, char **av)
+int					ft_strcmp(const char *s1, const char *s2)
 {
-	char		flags;
-
-	flags = 0;
-	if (ac <= 1)
-		return (0);
-	if ((flags = ft_getflags(&av)) & ERROR)
-		return (0);
-	ft_testflags(flags);
-	ft_manage_first(av, flags);
-	return (0);
+	if (!s1)
+		return ((unsigned char)*s2);
+	if (!s2)
+		return ((unsigned char)*s1);
+	while (*s1 && *s1 == *s2)
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
 }

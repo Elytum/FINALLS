@@ -17,7 +17,10 @@ CFLAGS = -Wall -Wextra -Werror -I./includes -g
 NAME = ft_ls
 
 #--------------Sources----------------------#
-FILES =	main.c
+FILES =	main.c	\
+		libft.c	\
+		flags.c	\
+		path.c	
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))
 BASEDIR = ./srcs
