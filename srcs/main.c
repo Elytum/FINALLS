@@ -10,15 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <stdlib.h>
 #include "../includes/ft_ls.h"
+#include <unistd.h>
 
-void			ft_putfiles(char **av)
+void		ft_putfiles(char **av)
 {
-	char		**ptr;
+	char	**ptr;
 
 	ptr = av;
 	while (*ptr)
@@ -29,10 +26,10 @@ void			ft_putfiles(char **av)
 	}
 }
 
-void			ft_manage_first(char **args, char flags)
+void		ft_manage_first(char **args, char flags)
 {
-	t_paths			*paths;
-	char			**ptr;
+	t_paths	*paths;
+	char	**ptr;
 
 	paths = NULL;
 	ptr = args;
@@ -46,15 +43,20 @@ void			ft_manage_first(char **args, char flags)
 	(void)flags;
 }
 
-int				main(int ac, char **av)
+int			main(int ac, char **av)
 {
-	char		flags;
+	char	flags;
 
 	flags = 0;
-	if (ac <= 1)
+
+	if (ac > 1 && (flags = ft_getflags(&av)) & ERROR)
 		return (0);
-	if ((flags = ft_getflags(&av)) & ERROR)
-		return (0);
+	if (!*av)
+	{
+		av = (char **)malloc(sizeof(char *) * 2);
+		*av = ft_strdup(".");
+		*(av + 1) = NULL;
+	}
 	ft_testflags(flags);
 	ft_manage_first(av, flags);
 	return (0);

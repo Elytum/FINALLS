@@ -13,6 +13,7 @@
 #ifndef FT_LS_H
 # define FT_LS_H
 # include <stdlib.h>
+# include <stdio.h>
 
 typedef struct		s_paths
 {

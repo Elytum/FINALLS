@@ -10,11 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "../includes/ft_ls.h"
 #include <unistd.h>
 #include <sys/stat.h>
-#include <stdlib.h>
-#include "../includes/ft_ls.h"
 
 void				ft_putpath(t_paths *paths)
 {
