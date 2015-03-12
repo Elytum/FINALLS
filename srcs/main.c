@@ -280,8 +280,8 @@ void		ft_manage_first(char **args, char flags)
 	ft_split_order_type_one(paths, &files, &dirs, flags);
 	ft_putfilesdebug(files);
 	ptr = ft_extractpaths(dirs);
-	ft_freefiles(&files);
-	ft_freefiles(&dirs);
+	// ft_freefiles(&files);
+	// ft_freefiles(&dirs);
 	p = ptr;
 	while (*p)
 	{
