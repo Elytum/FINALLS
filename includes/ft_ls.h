@@ -21,8 +21,24 @@ typedef struct		s_paths
 	struct s_paths	*next;
 }					t_paths;
 
+typedef struct		s_file
+{
+	char			*permissions;
+	char			*hard_links;
+	char			*owner;
+	char			*group;
+	char			*name;
+	char			*path;
+	long long int	size;
+	int				date;
+	char			*psize;
+	char			*pdate;
+	struct s_file	*next;
+}					t_file;
+
 size_t				ft_strlen(char *str);
 char				*ft_strdup(char *str);
+char				*ft_strndup(char *str, size_t n);
 int					ft_strcmp(const char *s1, const char *s2);
 void				ft_fillflag(char p, char *flags);
 char				ft_getflags(char ***str);
@@ -30,6 +46,9 @@ void				ft_testflags(char flags);
 void				ft_addpath(t_paths **paths, char *p);
 void				ft_putpath(t_paths *paths);
 void				ft_cleanpath(t_paths **paths);
+char				*ft_itoa(int n);
+char				*ft_strrev(char *str);
+int					ft_atoi(const char *str);
 
 # define LL_FLAG 0b00000001
 # define UR_FLAG 0b00000010

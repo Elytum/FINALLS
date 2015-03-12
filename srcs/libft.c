@@ -12,6 +12,34 @@
 
 #include <stdlib.h>
 
+int		ft_atoi(const char *str)
+{
+	int	value;
+	int	sign;
+
+	sign = 1;
+	if (!str)
+		return (0);
+	while (str[0] == ' ' || str[0] == '\t' || str[0] == '\n' ||
+		str[0] == '\v' || str[0] == '\f' || str[0] == '\r')
+		str++;
+	if (str[0] == '+')
+		str++;
+	else if (str[0] == '-')
+	{
+		sign = -1;
+		str++;
+	}
+	value = 0;
+	while (str[0] >= '0' && str[0] <= '9')
+	{
+		value = value * 10 + str[0] - '0';
+		str++;
+	}
+	return (value * sign);
+}
+
+
 size_t				ft_strlen(char *str)
 {
 	char			*ptr;
@@ -31,6 +59,20 @@ char				*ft_strdup(char *str)
 		return (NULL);
 	ptr = strnew;
 	while (*str)
+		*ptr++ = *str++;
+	*ptr = '\0';
+	return (strnew);
+}
+
+char				*ft_strndup(char *str, size_t n)
+{
+	register char	*strnew;
+	register char	*ptr;
+
+	if (!(strnew = (char *)malloc(sizeof(char) * ft_strlen(str) + 1)))
+		return (NULL);
+	ptr = strnew;
+	while (--n && *str)
 		*ptr++ = *str++;
 	*ptr = '\0';
 	return (strnew);

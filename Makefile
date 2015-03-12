@@ -9,16 +9,17 @@
 #    Updated: 2014/12/13 12:55:35 by pfournet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
+#-Wall -Wextra -Werror 
 # -------------Compilateur------------------#
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes -g
+CFLAGS = -I./includes -g
 #--------------Name-------------------------#
 NAME = ft_ls
 
 #--------------Sources----------------------#
 FILES =	main.c	\
 		libft.c	\
+		libft2.c	\
 		flags.c	\
 		path.c	
 

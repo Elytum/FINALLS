@@ -39,7 +39,7 @@ char			ft_getflags(char ***str)
 	char		flags;
 	char		*p;
 
-	flags = 0, (*str)++;
+	flags = 0;
 	while (*(*str))
 	{
 		if (**(*str) != '-')
