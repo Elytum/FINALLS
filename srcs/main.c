@@ -247,15 +247,24 @@ char		**ft_extractpaths(t_file *head)
 
 void		ft_freefiles(t_file **head)
 {
-	free((*head)->permissions);
-	free((*head)->hard_links);
-	free((*head)->owner);
-	free((*head)->group);
-	free((*head)->name);
-	free((*head)->path);
-	free((*head)->psize);
-	free((*head)->pdate);
-	free(*head);
+	t_file	*ptr;
+	t_file	*past;
+
+	ptr = *head;
+	while (ptr)
+	{
+		free(ptr->permissions);
+		free(ptr->hard_links);
+		free(ptr->owner);
+		free(ptr->group);
+		free(ptr->name);
+		// free(ptr->path);
+		free(ptr->psize);
+		free(ptr->pdate);
+		past = ptr;
+		ptr = ptr->next;
+		free(past);
+	}
 }
 
 void		ft_manage_first(char **args, char flags)
@@ -280,8 +289,8 @@ void		ft_manage_first(char **args, char flags)
 	ft_split_order_type_one(paths, &files, &dirs, flags);
 	ft_putfilesdebug(files);
 	ptr = ft_extractpaths(dirs);
-	// ft_freefiles(&files);
-	// ft_freefiles(&dirs);
+	ft_freefiles(&files);
+	ft_freefiles(&dirs);
 	p = ptr;
 	while (*p)
 	{
