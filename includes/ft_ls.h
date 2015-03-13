@@ -14,6 +14,22 @@
 # define FT_LS_H
 # include <stdlib.h>
 # include <stdio.h>
+# define BYPASS struct stat
+
+
+#include "../includes/ft_ls.h"
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <pwd.h>
+#include <grp.h>
+#include <time.h>
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <errno.h>
+# include <string.h>
+# include <dirent.h>
 
 typedef struct		s_paths
 {
@@ -35,6 +51,7 @@ typedef struct		s_file
 	char			*pdate;
 	struct s_file	*next;
 }					t_file;
+typedef int			(*compare)(t_file *f1, t_file *f2);
 
 size_t				ft_strlen(char *str);
 char				*ft_strdup(char *str);
@@ -50,6 +67,25 @@ char				*ft_itoa(int n);
 char				*ft_strrev(char *str);
 int					ft_atoi(const char *str);
 char				*ft_strcpy(char *dst, const char *src);
+char				ft_getsymbole(struct stat filestat);
+char				*ft_get_permissions(struct stat filestat);
+char				*ft_get_owner(struct stat filestat);
+char				*ft_get_group(struct stat filestat);
+int					ft_cmpname(t_file *s1, t_file *s2);
+int					ft_cmprname(t_file *s1, t_file *s2);
+int					ft_cmpdate(t_file *s1, t_file *s2);
+int					ft_cmprdate(t_file *s1, t_file *s2);
+compare				ft_get_function(char flags);
+void				ft_putfilesdebug(t_file *head, char flags);
+void				ft_put_permission_denied(char *path);
+void				ft_add_new_file2(t_file **first, char *name,
+								char *path, compare f);
+void				ft_split_order_type(t_paths *paths, t_file **files,
+									compare f);
+void				ft_manage_directory(char *dir, compare f, char flags, int len);
+char				**ft_extractpaths(t_file *head);
+void				ft_freefiles(t_file **head);
+void		ft_freefilestest(t_file **head);
 
 # define LL_FLAG 0b00000001
 # define UR_FLAG 0b00000010

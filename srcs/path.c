@@ -14,28 +14,28 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-void				ft_putpath(t_paths *paths)
-{
-	t_paths			*ptr;
-	struct stat		statbuf;
+// void			ft_putpath(t_paths *paths)
+// {
+// 	t_paths		*ptr;
+// 	struct stat	statbuf;
 
-	ptr = paths;
-	while (ptr)
-	{
-		stat(ptr->path, &statbuf);
-		if (S_ISREG(statbuf.st_mode))
-			dprintf(1, "%s is a file\n", ptr->path);
-		else if (S_ISDIR(statbuf.st_mode))
-			dprintf(1, "%s is a directory\n", ptr->path);
-		ptr = ptr->next;
-	}
-}
+// 	ptr = paths;
+// 	while (ptr)
+// 	{
+// 		stat(ptr->path, &statbuf);
+// 		if (S_ISREG(statbuf.st_mode))
+// 			dprintf(1, "%s is a file\n", ptr->path);
+// 		else if (S_ISDIR(statbuf.st_mode))
+// 			dprintf(1, "%s is a directory\n", ptr->path);
+// 		ptr = ptr->next;
+// 	}
+// }
 
-void				ft_cleanpath(t_paths **paths)
+void			ft_cleanpath(t_paths **paths)
 {
-	t_paths			*ptr;
-	t_paths			*past;
-	struct stat		statbuf;
+	t_paths		*ptr;
+	t_paths		*past;
+	struct stat	statbuf;
 
 	ptr = *paths;
 	past = NULL;
@@ -59,10 +59,10 @@ void				ft_cleanpath(t_paths **paths)
 	}
 }
 
-void				ft_addpath(t_paths **paths, char *p)
+void			ft_addpath(t_paths **paths, char *p)
 {
-	t_paths			*ptr;
-	t_paths			*newp;
+	t_paths		*ptr;
+	t_paths		*newp;
 
 	if (!(newp = (t_paths *)malloc(sizeof(t_paths))))
 		return ;
@@ -83,4 +83,46 @@ void				ft_addpath(t_paths **paths, char *p)
 		newp->next = ptr->next;
 		ptr->next = newp;
 	}
+}
+
+size_t			ft_nbofpaths(t_file *head)
+{
+	t_file		*ptr;
+	size_t		len;
+
+	len = 0;
+	ptr = head;
+	while (ptr)
+	{
+		if (ptr->permissions[0] == 'd' &&
+			!((ptr->name[0] == '.' && !(ptr->name[1])) ||
+			(ptr->name[0] == '.' && ptr->name[1] == '.' && !ptr->name[2])))
+			len++;
+		ptr = ptr->next;
+	}
+	return (len);
+}
+
+char			**ft_extractpaths(t_file *head)
+{
+	t_file		*ptr;
+	char		**paths;
+	char		**p;
+
+	if (!(paths = (char **)malloc(sizeof(char *) * (ft_nbofpaths(head) + 1))))
+		return (NULL);
+	p = paths;
+	ptr = head;
+	while (ptr)
+	{
+		if (ptr->permissions[0] == 'd' &&
+			!((ptr->name[0] == '.' && !(ptr->name[1])) ||
+			(ptr->name[0] == '.' && ptr->name[1] == '.' && !ptr->name[2])))
+		{
+			*p++ = ft_strdup(ptr->path);
+		}
+		ptr = ptr->next;
+	}
+	*p = NULL;
+	return (paths);
 }

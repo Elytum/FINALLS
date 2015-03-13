@@ -21,7 +21,12 @@ FILES =	main.c	\
 		libft.c	\
 		libft2.c	\
 		flags.c	\
-		path.c	
+		path.c	\
+		get_info.c	\
+		comparisons.c	\
+		puts.c	\
+		first_tools.c	\
+		free.c
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))
 BASEDIR = ./srcs
