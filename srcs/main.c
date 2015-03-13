@@ -39,7 +39,7 @@ void		ft_manage_first(char **args, char flags)
 	while (*ptr)
 		ft_addpath(&paths, *ptr++);
 	ft_cleanpath(&paths);
-	ft_split_order_type(paths, &files, f);
+	/**/ft_split_order_type(paths, &files, f);
 	ft_putfilesdebug(files, flags);
 	ptr = ft_extractpaths(files);
 // ft_freefilestest(&files);

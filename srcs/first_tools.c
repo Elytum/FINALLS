@@ -26,7 +26,7 @@ static void		ft_add_new_file(t_file **first, char *path,
 {
 	t_file		*newf;
 
-	dprintf(1, "Path = %s\n", path);
+	// dprintf(1, "Path = %s\n", path);
 	if (!(newf = (t_file *)malloc(sizeof(t_file))))
 		return ;
 	newf->name = path;
@@ -53,7 +53,7 @@ void			ft_add_new_file2(t_file **first, char *name,
 		!(newf = (t_file *)malloc(sizeof(t_file))))
 		return ;
 	newf->name = ft_strdup(name);
-	newf->path = path;
+	newf->path = ft_strdup(path);
 	newf->owner = ft_get_owner(filestat);
 	newf->group = ft_get_group(filestat);
 	newf->pdate = ft_strndup(ctime(&filestat.st_mtime) + 4, 13);
@@ -103,7 +103,7 @@ void				ft_manage_directory(char *dir, compare f, char flags, int len)
 	}
 	ft_strcpy(path, dir);
 	ptr = path + len;
-	if (*(ptr - 1) != '/')
+	// if (*(ptr - 1) != '/')
 		*ptr++ = '/';
 	*ptr = '\0';
 	files = NULL;
@@ -123,15 +123,18 @@ void				ft_manage_directory(char *dir, compare f, char flags, int len)
 	if (flags & UR_FLAG)
 		paths = ft_extractpaths(files);
 // ft_freefiles(&files);
-	if (flags & UR_FLAG && paths)
-	{
-		pptr = paths;
+	// if (flags & UR_FLAG && paths)
+	// {
+	// 	pptr = paths;
+	// 	while (*pptr)
+	// 	{
+	// 		// dprintf(1, "*pptr = '%s'\n", *pptr);
+	// 		ft_manage_directory(*pptr, f, flags, ft_strlen(*pptr));
+	// 		free(*pptr++);
+	// 	}
+	// }
+		if (flags & UR_FLAG && paths && (pptr = paths - 1))
 		while (*(++pptr))
-		{
-			// dprintf(1, "*pptr = '%s'\n", *pptr);
 			ft_manage_directory(*pptr, f, flags, ft_strlen(*pptr));
-			// free(*pptr++);
-		}
-	}
 	closedir(dirp);
 }
