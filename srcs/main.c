@@ -157,7 +157,7 @@ void		ft_add_new_file2(t_file **first, char *name, char *path, compare f)
 	newf->path = ft_strdup(path);
 	newf->owner = ft_get_owner(filestat);
 	newf->group = ft_get_group(filestat);
-	newf->pdate = ft_strndup(ctime(&filestat.st_mtime) + 4, 12);
+	newf->pdate = ft_strndup(ctime(&filestat.st_mtime) + 4, 13);
 	newf->date = ft_atoi(newf->pdate);
 	newf->size = filestat.st_size;
 	newf->psize = ft_itoa(filestat.st_size);
@@ -315,6 +315,40 @@ void		ft_freefiles(t_file **head)
 	}
 }
 
+/*
+char		**ft_extractpaths2(t_file *head)
+{
+	int 	len;
+	t_file	*ptr;
+	char	**paths;
+	char	**p;
+
+	len = 0;
+	ptr = head;
+	while (ptr)
+	{
+		if (ptr->permissions[0] == 'd' &&
+			!((ptr->name[0] == '.' && !(ptr->name[1])) ||
+			(ptr->name[0] == '.' && ptr->name[1] == '.' && !ptr->name[2])))
+			len++;
+		ptr = ptr->next;
+	}
+	if (!(paths = (char **)malloc(sizeof(len + 1))))
+		return (NULL);
+	p = paths;
+	ptr = head;
+	while (ptr)
+	{
+		if (ptr->permissions[0] == 'd' &&
+			!((ptr->name[0] == '.' && !(ptr->name[1])) ||
+			(ptr->name[0] == '.' && ptr->name[1] == '.' && !ptr->name[2])))
+			*p++ = ft_strdup(ptr->path);
+		ptr = ptr->next;
+	}
+	*p = NULL;
+	return (paths);
+*/
+
 void		ft_freefiles2(t_file **head)
 {
 	t_file	*ptr;
@@ -337,24 +371,98 @@ void		ft_freefiles2(t_file **head)
 	}
 }
 
+char		**ft_extractpaths2(t_file *head)
+{
+	int 	len;
+	t_file	*ptr;
+	char	**paths;
+	char	**p;
+
+	len = 0;
+	ptr = head;
+	while (ptr)
+	{
+		if (ptr->permissions[0] == 'd' &&
+			!((ptr->name[0] == '.' && !(ptr->name[1])) ||
+			(ptr->name[0] == '.' && ptr->name[1] == '.' && !ptr->name[2])))
+			len++;
+		ptr = ptr->next;
+	}
+	if (!(paths = (char **)malloc(sizeof(char *) * (len + 1))))
+		return (NULL);
+	p = paths;
+	ptr = head;
+	while (ptr)
+	{
+		if (ptr->permissions[0] == 'd' &&
+			!((ptr->name[0] == '.' && !(ptr->name[1])) ||
+			(ptr->name[0] == '.' && ptr->name[1] == '.' && !ptr->name[2])))
+			*p++ = ft_strdup(ptr->path);
+		ptr = ptr->next;
+	}
+	*p = NULL;
+	return (paths);
+	// }
+	// if (!(paths = (char **)malloc(sizeof(char *) * (len + 1))))
+	// 	return (NULL);
+	// p = paths;
+	// ptr = head;
+	// while (ptr)
+	// {
+	// 	*p++ = ft_strdup(ptr->name);
+	// 	ptr = ptr->next;
+	// }
+	// *p = NULL;
+	// return (paths);
+}
+
+void		ft_put_permission_denied(char *path)
+{
+	char	*ptr;
+	char	*p;
+
+	write(1, "ls: ", 4);
+	ptr = path;
+	while (*ptr)
+		ptr++;
+	while (*ptr != '/' && ptr != path)
+		ptr--;
+	if (*ptr == '/')
+		ptr++;
+	p = ptr;
+	while (*p)
+		p++;
+	write(1, ptr, p - ptr);
+	write(1, ": Permission denied\n", 20);
+}
+
 void		ft_manage_directory(char *dir, compare f, char flags, int len)
 {
 	DIR				*dirp;
 	struct dirent	*direntp;
 	char			*path;
+	char			**paths;
 	char			*ptr;
+	char			**pptr;
 	t_file			*files;
-	t_file			*directories;
 
-	if (!(path = (char *)malloc(sizeof(char) * (2567 + len))) ||
-		!(dirp = opendir(dir)))
+	write(1, "\n", 1);
+	write(1, dir, len);
+	write(1, ":\n", 2);
+	if (!(path = (char *)malloc(sizeof(char) * (2567 + len))))
 		return ;
+	if (!(dirp = opendir(dir)))
+	{
+		ft_put_permission_denied(dir);
+//		dprintf(1, "ls: a: Permission denied\n");
+		return ;
+	}
 	ft_strcpy(path, dir);
 	ptr = path + len;
 	*ptr++ = '/';
 	*ptr = '\0';
 	files = NULL;
-	directories = NULL;
+	paths = NULL;
 	while ((direntp = readdir(dirp)))
 	{
 		if (direntp == NULL)
@@ -365,7 +473,13 @@ void		ft_manage_directory(char *dir, compare f, char flags, int len)
 			ft_add_new_file2(&files, direntp->d_name, path, f);
 		}
 	}
+	free(path);
 	ft_putfilesdebug(files, flags);
+	if (flags & UR_FLAG)
+		paths = ft_extractpaths2(files);
+	if (flags & UR_FLAG && paths && (pptr = paths - 1))
+		while (*(++pptr))
+			ft_manage_directory(*pptr, f, flags, ft_strlen(*pptr));
 	closedir(dirp);
 }
 
@@ -389,24 +503,23 @@ void		ft_manage_first(char **args, char flags)
 		ptr++;
 	}
 	ft_cleanpath(&paths);
-	// ft_putpath(paths);
 	ft_split_order_type_one(paths, &files, &dirs, f);
 	ft_putfilesdebug(files, flags);
 	ptr = ft_extractpaths(dirs);
 	ft_freefiles(&files);
 	ft_freefiles(&dirs);
 	p = ptr;
-	if (*p)
-		write(1, "\n", 1);
+	// if (*p)
+		// write(1, "\n", 1);
 	while (*p)
 	{
-		write(1, *p, ft_strlen(*p));
-		write(1, ":\n", 2);
+		// write(1, *p, ft_strlen(*p));
+		// write(1, ":\n", 2);
 		ft_manage_directory(*p, f, flags, ft_strlen(*p));
 		free(*p);
 		p++;
-		if (*p)
-			write(1, "\n", 1);
+		// if (*p)
+		// 	write(1, "\n", 1);
 	}
 	free(ptr);
 }
