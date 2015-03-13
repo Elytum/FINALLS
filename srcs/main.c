@@ -17,6 +17,12 @@
 #include <pwd.h>
 #include <grp.h>
 #include <time.h>
+
+# include <stdio.h>
+# include <stdlib.h>
+# include <errno.h>
+# include <string.h>
+# include <dirent.h>
 #define BYPASS struct stat
 
 typedef int (*compare)(t_file *f1, t_file *f2);
@@ -66,6 +72,7 @@ char		*ft_get_permissions(struct stat filestat)
 	permissions[7] = ((filestat.st_mode & S_IROTH) ? 'r' : '-');
 	permissions[8] = ((filestat.st_mode & S_IWOTH) ? 'w' : '-');
 	permissions[9] = ((filestat.st_mode & S_IXOTH) ? 'x' : '-');
+	permissions[10] = '\0';
 	return (permissions);
 }
 
@@ -138,6 +145,30 @@ void		ft_add_new_file(t_file **first, char *path, BYPASS filestat, compare f)
 	// f(NULL, NULL);
 }
 
+void		ft_add_new_file2(t_file **first, char *name, char *path, compare f)
+{
+	t_file	*newf;
+	BYPASS	filestat;
+
+	if ((stat(path, &filestat) == -1) ||
+		!(newf = (t_file *)malloc(sizeof(t_file))))
+		return ;
+	newf->name = ft_strdup(name);
+	newf->path = ft_strdup(path);
+	newf->owner = ft_get_owner(filestat);
+	newf->group = ft_get_group(filestat);
+	newf->pdate = ft_strndup(ctime(&filestat.st_mtime) + 4, 12);
+	newf->date = ft_atoi(newf->pdate);
+	newf->size = filestat.st_size;
+	newf->psize = ft_itoa(filestat.st_size);
+	newf->permissions = ft_get_permissions(filestat);
+	newf->hard_links = ft_itoa(filestat.st_nlink);
+	newf->next = NULL;
+	ft_insert_new_file(first, newf, f);
+	// f(NULL, NULL);
+}
+
+
 /*
 ** one ne remplit pas la liste de files avec le nom des dossiers
 ** la non one le fera, elle.
@@ -176,13 +207,11 @@ compare		ft_get_function(char flags)
 }
 
 void		ft_split_order_type_one(t_paths *paths, t_file **files,
-									t_file **dirs, char flags)
+									t_file **dirs, compare f)
 {
-	compare			f;
 	t_paths			*p;
 	struct stat		statbuf;
 
-	f = ft_get_function(flags);
 	p = paths;
 	while (p)
 	{
@@ -195,30 +224,49 @@ void		ft_split_order_type_one(t_paths *paths, t_file **files,
 	}
 }
 
-void		ft_putfilesdebug(t_file *head)
+void		ft_split_order_type_two(t_paths *paths, t_file **files,
+									t_file **dirs, compare f)
+{
+	t_paths			*p;
+	struct stat		statbuf;
+
+	p = paths;
+	while (p)
+	{
+		stat(p->path, &statbuf);
+		ft_add_new_file(files, p->path, statbuf, f);
+		if (S_ISDIR(statbuf.st_mode))
+			ft_add_new_file(dirs, p->path, statbuf, f);
+		p = p->next;
+	}
+}
+
+void		ft_putfilesdebug(t_file *head, char flags)
 {
 	t_file	*ptr;
 
 	ptr = head;
 	while (ptr)
 	{
-		write(1, ptr->permissions, ft_strlen(ptr->permissions));
-		write(1, " ", 1);
-		write(1, ptr->hard_links, ft_strlen(ptr->hard_links));
-		write(1, " ", 1);
-		write(1, ptr->owner, ft_strlen(ptr->owner));
-		write(1, " ", 1);
-		write(1, ptr->group, ft_strlen(ptr->group));
-		write(1, " ", 1);
-		write(1, ptr->psize, ft_strlen(ptr->psize));
-		write(1, " ", 1);
-		write(1, ptr->pdate, ft_strlen(ptr->pdate));
-		write(1, " ", 1);
+		if (flags & LL_FLAG)
+		{
+			write(1, ptr->permissions, ft_strlen(ptr->permissions));
+			write(1, " ", 1);
+			write(1, ptr->hard_links, ft_strlen(ptr->hard_links));
+			write(1, " ", 1);
+			write(1, ptr->owner, ft_strlen(ptr->owner));
+			write(1, " ", 1);
+			write(1, ptr->group, ft_strlen(ptr->group));
+			write(1, " ", 1);
+			write(1, ptr->psize, ft_strlen(ptr->psize));
+			write(1, " ", 1);
+			write(1, ptr->pdate, ft_strlen(ptr->pdate));
+			write(1, " ", 1);
+		}
 		write(1, ptr->name, ft_strlen(ptr->name));
 		write(1, "\n", 1);
 		ptr = ptr->next;
 	}
-	write (1, "\n", 1);
 }
 
 char		**ft_extractpaths(t_file *head)
@@ -267,6 +315,60 @@ void		ft_freefiles(t_file **head)
 	}
 }
 
+void		ft_freefiles2(t_file **head)
+{
+	t_file	*ptr;
+	t_file	*past;
+
+	ptr = *head;
+	while (ptr)
+	{
+		free(ptr->permissions);
+		free(ptr->hard_links);
+		free(ptr->owner);
+		free(ptr->group);
+		free(ptr->name);
+		free(ptr->path);
+		free(ptr->psize);
+		free(ptr->pdate);
+		past = ptr;
+		ptr = ptr->next;
+		free(past);
+	}
+}
+
+void		ft_manage_directory(char *dir, compare f, char flags, int len)
+{
+	DIR				*dirp;
+	struct dirent	*direntp;
+	char			*path;
+	char			*ptr;
+	t_file			*files;
+	t_file			*directories;
+
+	if (!(path = (char *)malloc(sizeof(char) * (2567 + len))) ||
+		!(dirp = opendir(dir)))
+		return ;
+	ft_strcpy(path, dir);
+	ptr = path + len;
+	*ptr++ = '/';
+	*ptr = '\0';
+	files = NULL;
+	directories = NULL;
+	while ((direntp = readdir(dirp)))
+	{
+		if (direntp == NULL)
+			break ;
+		if (flags & LA_FLAG || direntp->d_name[0] != '.')
+		{
+			ft_strcpy(ptr, direntp->d_name);
+			ft_add_new_file2(&files, direntp->d_name, path, f);
+		}
+	}
+	ft_putfilesdebug(files, flags);
+	closedir(dirp);
+}
+
 void		ft_manage_first(char **args, char flags)
 {
 	t_paths	*paths;
@@ -274,7 +376,9 @@ void		ft_manage_first(char **args, char flags)
 	char	**p;
 	t_file	*files;
 	t_file	*dirs;
+	compare	f;
 
+	f = ft_get_function(flags);
 	paths = NULL;
 	files = NULL;
 	dirs = NULL;
@@ -286,23 +390,25 @@ void		ft_manage_first(char **args, char flags)
 	}
 	ft_cleanpath(&paths);
 	// ft_putpath(paths);
-	ft_split_order_type_one(paths, &files, &dirs, flags);
-	ft_putfilesdebug(files);
+	ft_split_order_type_one(paths, &files, &dirs, f);
+	ft_putfilesdebug(files, flags);
 	ptr = ft_extractpaths(dirs);
 	ft_freefiles(&files);
 	ft_freefiles(&dirs);
 	p = ptr;
+	if (*p)
+		write(1, "\n", 1);
 	while (*p)
 	{
 		write(1, *p, ft_strlen(*p));
 		write(1, ":\n", 2);
-		write(1, "LS\n\n", 4);
+		ft_manage_directory(*p, f, flags, ft_strlen(*p));
 		free(*p);
 		p++;
+		if (*p)
+			write(1, "\n", 1);
 	}
 	free(ptr);
-	// dprintf(1, "DIRS :\n");
-	// ft_putfilesdebug(dirs);
 }
 
 int			main(int ac, char **av)

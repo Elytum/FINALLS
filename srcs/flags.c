@@ -12,6 +12,7 @@
 
 #include "../includes/ft_ls.h"
 #include <unistd.h>
+#include <stdio.h>
 
 void			ft_fillflag(char p, char *flags)
 {
@@ -42,7 +43,7 @@ char			ft_getflags(char ***str)
 	flags = 0;
 	while (*(*str))
 	{
-		if (**(*str) != '-')
+		if (**(*str) != '-' || !*(*(*str) + 1))
 			return (flags);
 		if ((**(*str) == '-' && *(*(*str) + 1) == '-'))
 		{

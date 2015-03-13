@@ -49,6 +49,7 @@ void				ft_cleanpath(t_paths **paths);
 char				*ft_itoa(int n);
 char				*ft_strrev(char *str);
 int					ft_atoi(const char *str);
+char				*ft_strcpy(char *dst, const char *src);
 
 # define LL_FLAG 0b00000001
 # define UR_FLAG 0b00000010

@@ -58,3 +58,17 @@ char		*ft_strrev(char *str)
 	dst[i] = '\0';
 	return (dst);
 }
+
+char		*ft_strcpy(char *dst, const char *src)
+{
+	size_t	c;
+
+	c = 0;
+	while (src[c])
+	{
+		dst[c] = src[c];
+		c++;
+	}
+	dst[c] = '\0';
+	return (dst);
+}
