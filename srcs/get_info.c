@@ -60,11 +60,11 @@ char				*ft_get_owner(struct stat filestat)
 	struct passwd	*pw;
 	char			*str;
 
-	pw = getpwuid(filestat.st_uid);
-	if (!pw)
+	if (!(pw = getpwuid(filestat.st_uid)))
 		str = NULL;
 	else
 		str = ft_strdup(pw->pw_name);
+	endpwent();
 	return (str);
 }
 
@@ -73,10 +73,10 @@ char				*ft_get_group(struct stat filestat)
 	struct group	*gr;
 	char			*str;
 
-	gr = getgrgid(filestat.st_gid);
-	if (!gr)
+	if (!((gr = getgrgid(filestat.st_gid))))
 		str = NULL;
 	else
 		str = ft_strdup(gr->gr_name);
+	endgrent();
 	return (str);
 }

@@ -10,9 +10,12 @@ void		ft_putfilesdebug(t_file *head, char flags)
 	{
 		if (flags & LL_FLAG)
 		{
+			ptr->phard_links = ft_ltoa(ptr->hard_links);
+			ptr->psize = ft_itoa(ptr->size);
+			ptr->pdate = ft_itoa(ptr->date);
 			write(1, ptr->permissions, ft_strlen(ptr->permissions));
 			write(1, " ", 1);
-			write(1, ptr->hard_links, ft_strlen(ptr->hard_links));
+			write(1, ptr->phard_links, ft_strlen(ptr->phard_links));
 			write(1, " ", 1);
 			write(1, ptr->owner, ft_strlen(ptr->owner));
 			write(1, " ", 1);
@@ -22,6 +25,9 @@ void		ft_putfilesdebug(t_file *head, char flags)
 			write(1, " ", 1);
 			write(1, ptr->pdate, ft_strlen(ptr->pdate));
 			write(1, " ", 1);
+			free(ptr->phard_links);
+			free(ptr->psize);
+			free(ptr->pdate);
 		}
 		write(1, ptr->name, ft_strlen(ptr->name));
 		write(1, "\n", 1);
