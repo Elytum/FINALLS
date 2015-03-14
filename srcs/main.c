@@ -78,7 +78,7 @@ void		ft_manage_first(char **args, char flags)
 	if (*p)
 	{
 		write(1, "\n", 1);
-		if (!*(p + 1))
+		if (!*(p + 1) && !(flags & UR_FLAG))
 			flags |= SINGLE;
 		while (*p)
 		{

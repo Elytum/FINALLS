@@ -67,6 +67,23 @@ void				ft_split_order_type(t_paths *paths,
 	}
 }
 
+void				ft_puttotal(t_file *files)
+{
+	t_file			*ptr;
+	size_t			total;
+
+	total = 0;
+	ptr = files;
+	if (!files)
+		return ;
+	while (ptr)
+	{
+		total += ptr->filestat.st_blocks;
+		ptr = ptr->next;
+	}
+	dprintf(1, "Total = %zu\n", total);
+}
+
 void				ft_manage_directory(char *dir, compare f, char flags, t_times times)
 {
 	DIR				*dirp;
@@ -111,6 +128,8 @@ void				ft_manage_directory(char *dir, compare f, char flags, t_times times)
 		}
 	}
 	closedir(dirp);
+	if (flags & LL_FLAG)
+		ft_puttotal(files);
 	ft_putfilesdebug(files, flags, times);
 	paths = ft_extractpaths(files);
 	free(info.path);
