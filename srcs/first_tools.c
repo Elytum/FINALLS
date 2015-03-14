@@ -121,9 +121,14 @@ void				ft_manage_directory(char *dir, compare f, char flags, t_times times)
 		while (*pptr)
 		{
 			ft_manage_directory(*pptr, f, flags, times);
-			pptr++;
-			// free(*pptr++);
+			free(*pptr++);
 		}
+	}
+	else
+	{
+		pptr = paths;
+		while (*pptr)
+			free(*pptr++);
 	}
 	free(paths);
 }

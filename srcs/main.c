@@ -76,11 +76,13 @@ void		ft_manage_first(char **args, char flags)
 	ft_freefilestest(&files);
 	p = ptr;
 	if (*p)
-		write(1, "\n", 1);
-	while (*p)
 	{
+		write(1, "\n", 1);
 		if (!*(p + 1))
 			flags |= SINGLE;
+	}
+	while (*p)
+	{
 		ft_manage_directory(*p, f, flags, times);
 		free(*p++);
 	}
@@ -91,9 +93,6 @@ int			main(int ac, char **av)
 {
 	char	flags;
 	int		f;
-
-	// dprintf(1, "Time = %li\n", time(NULL));
-	// return (0);
 
 	flags = 0;
 	f = 0;
