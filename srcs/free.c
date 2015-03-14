@@ -64,7 +64,7 @@ void		ft_freefiles2(t_file **head, char flags)
 	ptr = *head;
 	while (ptr)
 	{
-		free(ptr->path);
+		free(ptr->name);
 		past = ptr;
 		ptr = ptr->next;
 		free(past);

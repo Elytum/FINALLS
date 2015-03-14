@@ -85,7 +85,7 @@ void				ft_put_onwork_group(int gid)
 	write(1, " ", 1);
 }
 
-void		ft_putfilesdebug(t_file *head, char flags)
+void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 {
 	t_file	*ptr;
 
@@ -103,9 +103,16 @@ void		ft_putfilesdebug(t_file *head, char flags)
 			ft_put_onwork_value(ptr->filestat.st_size);
 			write(1, " ", 1);
 			write(1, " ", 1);
-			write(1, ctime(&(ptr->filestat).st_mtime) + 4, 12);
+			// dprintf(1, "Date = %i ", ptr->date);
+			if (ptr->date > times.timelimit && ptr->date < times.launchtime)
+				write(1, ctime(&(ptr->filestat).st_mtime) + 4, 12);
+			else
+			{
+				write(1, ctime(&(ptr->filestat).st_mtime) + 4, 7);
+				write(1, " ", 1);
+				write(1, ctime(&(ptr->filestat).st_mtime) + 20, 4);
+			}
 			write(1, " ", 1);
-			write(1, ptr->name, ft_strlen(ptr->name));
 			// if ((pw = getpwuid(ptr->filestat.st_uid)))
 			// {
 			// 	write(1, pw->pw_name, ft_strlen(pw->pw_name));
@@ -121,10 +128,11 @@ void		ft_putfilesdebug(t_file *head, char flags)
 			// write(1, " ", 1);
 		}
 		write(1, ptr->name, ft_strlen(ptr->name));
-		// write(1, "\n", 1);
+		write(1, "\n", 1);
 		// write(1, "LOL\n", 4);
 		ptr = ptr->next;
 	}
+	times.timelimit++;
 }
 
 void		ft_put_permission_denied(char *path)

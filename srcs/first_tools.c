@@ -31,6 +31,7 @@ static void		ft_add_new_file(t_file **first, char *path,
 /**/newf->name = path;
 /**/newf->path = path;
 	newf->filestat = filestat;
+	newf->date = filestat.st_mtime;
 	newf->next = NULL;
 	ft_insert_new_file(first, newf, f);
 }
@@ -43,9 +44,10 @@ void			ft_add_new_file2(t_file **first, t_info info, compare f, char flags)
 	if ((stat(info.path, &filestat) == -1) ||
 		!(newf = (t_file *)malloc(sizeof(t_file))))
 		return ;
-	newf->name = info.name;
-	newf->path = ft_strdup(info.path);
+	newf->name = ft_strdup(info.name);
+	newf->path = info.path;
 	newf->filestat = filestat;
+	newf->date = filestat.st_mtime;
 	newf->next = NULL;
 	ft_insert_new_file(first, newf, f);
 }
@@ -65,7 +67,7 @@ void				ft_split_order_type(t_paths *paths,
 	}
 }
 
-void				ft_manage_directory(char *dir, compare f, char flags, int len)
+void				ft_manage_directory(char *dir, compare f, char flags, t_times times)
 {
 	DIR				*dirp;
 	struct dirent	*direntp;
@@ -75,7 +77,9 @@ void				ft_manage_directory(char *dir, compare f, char flags, int len)
 	char			**pptr;
 	t_file			*files;
 	t_info			info;
+	int				len;
 
+	len = ft_strlen(dir);
 	write(1, "\n", 1);
 	write(1, dir, len);
 	write(1, ":\n", 2);
@@ -104,9 +108,9 @@ void				ft_manage_directory(char *dir, compare f, char flags, int len)
 			ft_add_new_file2(&files, info, f, flags);
 		}
 	}
-	free(info.path);
-	ft_putfilesdebug(files, flags);
+	ft_putfilesdebug(files, flags, times);
 	paths = ft_extractpaths(files);
+	free(info.path);
 	ft_freefiles2(&files, flags);
 	if (flags & UR_FLAG && paths)
 	{
@@ -114,7 +118,7 @@ void				ft_manage_directory(char *dir, compare f, char flags, int len)
 		while (*pptr)
 		{
 	// 		// dprintf(1, "*pptr = '%s'\n", *pptr);
-			ft_manage_directory(*pptr, f, flags, ft_strlen(*pptr));
+			ft_manage_directory(*pptr, f, flags, times);
 			free(*pptr++);
 		}
 	}

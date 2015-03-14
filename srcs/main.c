@@ -24,6 +24,8 @@
 # include <string.h>
 # include <dirent.h>
 
+#include <time.h>
+
 void		ft_manage_first(char **args, char flags)
 {
 	t_paths	*paths;
@@ -31,7 +33,11 @@ void		ft_manage_first(char **args, char flags)
 	char	**p;
 	t_file	*files;
 	compare	f;
+	t_times times;
 
+	times.launchtime = time(NULL);
+	times.timelimit = times.launchtime - 60 * 60 * 24 * 30 * 6;
+	dprintf(1, "launchtime = %i, timelimit = %i\n", times.launchtime, times.timelimit);
 	f = ft_get_function(flags);
 	paths = NULL;
 	files = NULL;
@@ -40,7 +46,7 @@ void		ft_manage_first(char **args, char flags)
 		ft_addpath(&paths, *ptr++);
 	ft_cleanpath(&paths);
 	/**/ft_split_order_type(paths, &files, f);
-	ft_putfilesdebug(files, flags);
+	ft_putfilesdebug(files, flags, times);
 
 	ptr = ft_extractpaths(files);
 	ft_freefilestest(&files);
@@ -49,7 +55,7 @@ void		ft_manage_first(char **args, char flags)
 		write(1, "\n", 1);
 	while (*p)
 	{
-		ft_manage_directory(*p, f, flags, ft_strlen(*p));
+		ft_manage_directory(*p, f, flags, times);
 		free(*p++);
 	}
 	free(ptr);
@@ -59,6 +65,9 @@ int			main(int ac, char **av)
 {
 	char	flags;
 	int		f;
+
+	// dprintf(1, "Time = %li\n", time(NULL));
+	// return (0);
 
 	flags = 0;
 	f = 0;
