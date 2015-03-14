@@ -47,9 +47,9 @@ void				ft_put_onwork_value_loop(int n, char *path)
 void				ft_put_onwork_value(int n, char *path)
 {
 	if (n == -2147483648)
-		ft_strcpy(path, "-2147483648");
+		ft_strcpyo(path, "-2147483648");
 	else if (n == 0)
-		ft_strcpy(path - 1, "0");
+		ft_strcpyo(path, "0");
 	else
 	{
 		if (n < 0)
@@ -144,7 +144,6 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 		if (!(tmp = (char *)malloc(sizeof(char) * (lens[4]))))
 			return ;
 		*(tmp + lens[4]) = '\0';
-		dprintf(1, "Lens : %i %i %i %i\n", lens[0], lens[1], lens[2], lens[3]);
 	}
 	ptr = head;
 	while (ptr)
@@ -183,9 +182,10 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 			write(1, ptr->name, ft_strlen(ptr->name));
 			write(1, "\n", 1);
 		}
-		// write(1, "LOL\n", 4);
 		ptr = ptr->next;
 	}
+	if (flags & LL_FLAG)
+		free(tmp);
 	free(buff);
 	times.timelimit++;
 }
@@ -209,9 +209,6 @@ void		ft_put_permission_denied(char *path)
 	write(1, ptr, p - ptr);
 	write(1, ": Permission denied\n", 20);
 }
-
-
-
 
 /*
 	newf->name = path;

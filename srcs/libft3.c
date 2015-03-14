@@ -25,7 +25,6 @@ int					ft_intlen(int n)
 {
 	int				len;
 
-	// dprintf(1, "Len of %i = ", n);
 	if (n == 0)
 		return (1);
 	else if (n == -2147483648)
@@ -41,39 +40,8 @@ int					ft_intlen(int n)
 		len++;
 		n /= 10;
 	}
-	// dprintf(1, "%i\n", len);
 	return (len);
 }
-
-/*
-char        *ft_itoa(int n)
-{
-    char    *str;
-    char    *new;
-    int     pos;
-    int     tmp;
-
-    pos = 0;
-    tmp = n;
-    if (n == -2147483648 || n == 0)
-        return ((n == 0) ? ft_strdup("0") : ft_strdup("-2147483648"));
-    if (!(str = (char *)malloc(sizeof(char) * 12)))
-        return (NULL);
-    if (n < 0)
-        n *= -1;
-    while (n > 0)
-    {
-        str[pos++] = (n % 10) + 48;
-        n = n / 10;
-    }
-    str[pos] = '\0';
-    (tmp < 0) ? (str[pos++] = '-') : 0;
-    str[pos] = '\0';
-    new = ft_strrev(str);
-    free(str);
-    return (new);
-}
-*/
 
 void		ft_bzero(void *s, size_t n)
 {

@@ -111,12 +111,14 @@ void				*ft_memalloc(size_t size);
 int					ft_intlen(int n);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memset(void *b, int c, size_t len);
+char				**ft_simple_extractpaths(t_file *head);
 
 # define LL_FLAG 0b00000001
 # define UR_FLAG 0b00000010
 # define LA_FLAG 0b00000100
 # define LR_FLAG 0b00001000
 # define LT_FLAG 0b00010000
+# define SINGLE 0b10000000
 # define ERROR 0b10000000
 # define ILLEGAL_OPTION "ls: illegal option -- "
 # define ILLEGAL_OPTION_SIZE 22

@@ -12,7 +12,7 @@
 #-Wall -Wextra -Werror 
 # -------------Compilateur------------------#
 CC = cc
-CFLAGS = -I./includes -g
+CFLAGS = -I./includes -g -O3
 #--------------Name-------------------------#
 NAME = ft_ls
 
@@ -23,7 +23,6 @@ FILES =	main.c	\
 		libft3.c	\
 		flags.c	\
 		path.c	\
-		get_info.c	\
 		comparisons.c	\
 		puts.c	\
 		first_tools.c	\

@@ -26,6 +26,21 @@
 
 #include <time.h>
 
+char		ft_any_file(t_file *head)
+{
+	t_file	*ptr;
+
+	ptr = head;
+	while (ptr)
+	{
+		dprintf(1, "Test %s\n", ptr->name);
+		if (S_ISREG(ptr->filestat.st_mode))
+			return (1);
+		ptr = ptr->next;
+	}
+	return (0);
+}
+
 void		ft_manage_first(char **args, char flags)
 {
 	t_paths	*paths;
@@ -37,7 +52,6 @@ void		ft_manage_first(char **args, char flags)
 
 	times.launchtime = time(NULL);
 	times.timelimit = times.launchtime - 60 * 60 * 24 * 30 * 6;
-	dprintf(1, "launchtime = %i, timelimit = %i\n", times.launchtime, times.timelimit);
 	f = ft_get_function(flags);
 	paths = NULL;
 	files = NULL;
@@ -46,15 +60,27 @@ void		ft_manage_first(char **args, char flags)
 		ft_addpath(&paths, *ptr++);
 	ft_cleanpath(&paths);
 	/**/ft_split_order_type(paths, &files, f);
-	ft_putfilesdebug(files, flags, times);
-
-	ptr = ft_extractpaths(files);
+	if (ft_any_file(files))
+	{
+		ft_putfilesdebug(files, flags, times);
+		ptr = ft_extractpaths(files);
+	}
+	else if (files && !files->next)
+	{
+		ptr = (char **)malloc(sizeof(char *) * 2);
+		*ptr = ft_strdup(files->name);
+		*(ptr + 1) = NULL;
+	}
+	else
+		ptr = ft_simple_extractpaths(files);
 	ft_freefilestest(&files);
 	p = ptr;
 	if (*p)
 		write(1, "\n", 1);
 	while (*p)
 	{
+		if (!*(p + 1))
+			flags |= SINGLE;
 		ft_manage_directory(*p, f, flags, times);
 		free(*p++);
 	}

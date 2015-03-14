@@ -79,9 +79,12 @@ void				ft_manage_directory(char *dir, compare f, char flags, t_times times)
 	int				len;
 
 	len = ft_strlen(dir);
-	write(1, "\n", 1);
-	write(1, dir, len);
-	write(1, ":\n", 2);
+	if (!(flags & SINGLE))
+	{
+		write(1, "\n", 1);
+		write(1, dir, len);
+		write(1, ":\n", 2);
+	}
 	if (!(info.path = (char *)malloc(sizeof(char) * (256 + len))))
 		return ;
 	if (!(dirp = opendir(dir)))
@@ -118,7 +121,8 @@ void				ft_manage_directory(char *dir, compare f, char flags, t_times times)
 		while (*pptr)
 		{
 			ft_manage_directory(*pptr, f, flags, times);
-			free(*pptr++);
+			pptr++;
+			// free(*pptr++);
 		}
 	}
 	free(paths);

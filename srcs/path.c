@@ -41,7 +41,7 @@ void			ft_cleanpath(t_paths **paths)
 	past = NULL;
 	while (ptr)
 	{
-		if (lstat(ptr->path, &statbuf) == -1)
+		if (stat(ptr->path, &statbuf) == -1 && lstat(ptr->path, &statbuf) == -1)
 		{
 			write(1, "ls: ", 4), write(1, ptr->path, ft_strlen(ptr->path));
 			write(1, ": No such file or directory\n", 28);
@@ -121,6 +121,33 @@ char			**ft_extractpaths(t_file *head)
 		{
 			*p++ = ft_strdup(ptr->path);
 		}
+		ptr = ptr->next;
+	}
+	*p = NULL;
+	return (paths);
+}
+
+char			**ft_simple_extractpaths(t_file *head)
+{
+	t_file		*ptr;
+	char		**paths;
+	char		**p;
+	size_t		len;
+
+	len = 0;
+	ptr = head;
+	while (ptr)
+	{
+		len++;
+		ptr = ptr->next;
+	}
+	if (!(paths = (char **)malloc(sizeof(char *) * (len + 1))))
+		return (NULL);
+	p = paths;
+	ptr = head;
+	while (ptr)
+	{
+		*p++ = ft_strdup(ptr->path);
 		ptr = ptr->next;
 	}
 	*p = NULL;
