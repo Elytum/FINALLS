@@ -87,38 +87,34 @@ void		ft_bzero(void *s, size_t n)
 
 void				*ft_memset(void *b, int c, size_t len)
 {
-	size_t			i;
 	unsigned char	*way;
 
-	i = 0;
 	way = (unsigned char *)b;
-	while (i < len)
-		way[i++] = (unsigned char)c;
+	while (len--)
+		*way++ = c;
 	return (b);
 }
 
 char		*ft_strcpyo(char *dst, const char *src)
 {
-			size_t	c;
+	char	*ptr;
+	char	*p;
 
-	c = 0;
-	while (src[c])
-	{
-		dst[c] = src[c];
-		c++;
-	}
+	p = dst;
+	ptr = (char *)src;
+	while (*ptr)
+		*p++ = *ptr++;
 	return (dst);
 }
 
 char		*ft_strncpyo(char *dst, const char *src, size_t n)
 {
-	size_t	c;
+	char	*ptr;
+	char	*p;
 
-	c = 0;
-	while (n-- && src[c])
-	{
-		dst[c] = src[c];
-		c++;
-	}
+	p = dst;
+	ptr = (char *)src;
+	while (n-- && *ptr)
+		*p++ = *ptr++;
 	return (dst);
 }

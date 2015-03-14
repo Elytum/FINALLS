@@ -140,9 +140,10 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 			ptr = ptr->next;
 		}
 		ft_getlens(head, &lens);//1 + 1 + 2 + 2 + 1
-		lens[4] = 11 + lens[0] + lens[1] + lens[2] + lens[3] + 7 + 20;
-		tmp = (char *)malloc(sizeof(char) * (lens[4]));
-		*(tmp + lens[4]--) = '\n';
+		lens[4] = 11 + lens[0] + lens[1] + lens[2] + lens[3] + 7 + 13;
+		if (!(tmp = (char *)malloc(sizeof(char) * (lens[4]))))
+			return ;
+		*(tmp + lens[4]) = '\0';
 		dprintf(1, "Lens : %i %i %i %i\n", lens[0], lens[1], lens[2], lens[3]);
 	}
 	ptr = head;
@@ -165,17 +166,17 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 			ft_put_onwork_value(ptr->filestat.st_size, p);
 			p += 2;
 			ft_put_onwork_time(ptr->filestat, ptr->date, times, p);
-			dprintf(1, "\t\tTest : '%s'\n", tmp);
+			write(1, tmp, lens[4]);
 
-			// write(1, ptr->name, ft_strlen(ptr->name));
-			// if (S_ISLNK(ptr->filestat.st_mode))
-			// {
-			// 	write(1, " -> ", 4);
-			// 	readlink(ptr->path, buff, 256);
-			// 	write(1, buff, 256);
-			// 	ft_strclr(buff);
-			// }
-			// write(1, "\n", 1);
+			write(1, ptr->name, ft_strlen(ptr->name));
+			if (S_ISLNK(ptr->filestat.st_mode))
+			{
+				write(1, " -> ", 4);
+				readlink(ptr->path, buff, 256);
+				write(1, buff, 256);
+				ft_strclr(buff);
+			}
+			write(1, "\n", 1);
 		}
 		else
 		{
