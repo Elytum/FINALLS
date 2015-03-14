@@ -12,10 +12,10 @@
 
 #include <stdlib.h>
 
-int		ft_atoi(const char *str)
+int					ft_atoi(const char *str)
 {
-	int	value;
-	int	sign;
+	int				value;
+	int				sign;
 
 	sign = 1;
 	if (!str)

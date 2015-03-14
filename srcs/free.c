@@ -41,8 +41,8 @@ void		ft_freefilestest(t_file **head)
 		// free(ptr->pdate);
 
 
-	free(ptr->owner);
-	free(ptr->group);
+	// free(ptr->owner);
+	// free(ptr->group);
 	// free(ptr->pdate);
 	// ptr->size = filestat.st_size;
 	// free(ptr->psize);

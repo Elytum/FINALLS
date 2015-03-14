@@ -71,7 +71,6 @@ void				ft_manage_directory(char *dir, compare f, char flags, t_times times)
 {
 	DIR				*dirp;
 	struct dirent	*direntp;
-	// char			*path;
 	char			**paths;
 	char			*ptr;
 	char			**pptr;
@@ -108,6 +107,7 @@ void				ft_manage_directory(char *dir, compare f, char flags, t_times times)
 			ft_add_new_file2(&files, info, f, flags);
 		}
 	}
+	closedir(dirp);
 	ft_putfilesdebug(files, flags, times);
 	paths = ft_extractpaths(files);
 	free(info.path);
@@ -117,30 +117,9 @@ void				ft_manage_directory(char *dir, compare f, char flags, t_times times)
 		pptr = paths;
 		while (*pptr)
 		{
-	// 		// dprintf(1, "*pptr = '%s'\n", *pptr);
 			ft_manage_directory(*pptr, f, flags, times);
 			free(*pptr++);
 		}
 	}
 	free(paths);
-
-	
-					// ft_putfilesdebug(files, flags);
-					// if (flags & UR_FLAG)
-						// paths = ft_extractpaths(files);
-// ft_freefiles(&files);
-	// if (flags & UR_FLAG && paths)
-	// {
-	// 	pptr = paths;
-	// 	while (*pptr)
-	// 	{
-	// 		// dprintf(1, "*pptr = '%s'\n", *pptr);
-	// 		ft_manage_directory(*pptr, f, flags, ft_strlen(*pptr));
-	// 		free(*pptr++);
-	// 	}
-	// }
-	// if (flags & UR_FLAG && paths && (pptr = paths - 1))
-						// while (*(++pptr))
-							// ft_manage_directory(*pptr, f, flags, ft_strlen(*pptr));
-	closedir(dirp);
 }

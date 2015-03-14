@@ -1,140 +1,191 @@
 #include "../includes/ft_ls.h"
 #include <unistd.h>
 
-void				ft_put_onwork_symbole(mode_t var)
+void				ft_put_onwork_symbole(mode_t var, char *path)
 {
 	if (S_ISLNK(var))
-		write(1, "l", 1);
+		*path = 'l';
 	else if ((var & 0170000) == 0040000)
-		write(1, "d", 1);
+		*path = 'd';
 	else if ((var & 0170000) == 0020000)
-		write(1, "c", 1);
+		*path = 'c';
 	else if ((var & 0170000) == 0060000)
-		write(1, "b", 1);
+		*path = 'b';
 	else if ((var & 0170000) == 0010000)
-		write(1, "p", 1);
+		*path = 'p';
 	else if ((var & 0170000) == 0140000)
-		write(1, "s", 1);
-	write(1, "-", 1);
+		*path = 's';
+	else
+		*path = '-';
 }
 
-void				ft_put_onwork_permissions(mode_t var)
+void				ft_put_onwork_permissions(mode_t var, char *path)
 {
-	ft_put_onwork_symbole(var);
-	write(1, ((var & S_IRUSR) ? "r" : "-"), 1);
-	write(1, ((var & S_IWUSR) ? "w" : "-"), 1);
-	write(1, ((var & S_IXUSR) ? "x" : "-"), 1);
-	write(1, ((var & S_IRGRP) ? "r" : "-"), 1);
-	write(1, ((var & S_IWGRP) ? "w" : "-"), 1);
-	write(1, ((var & S_IXGRP) ? "x" : "-"), 1);
-	write(1, ((var & S_IROTH) ? "r" : "-"), 1);
-	write(1, ((var & S_IWOTH) ? "w" : "-"), 1);
-	write(1, ((var & S_IXOTH) ? "x" : "-"), 1);
-	write(1, "  ", 2);
+ 	*path-- = ((var & S_IXOTH) ? 'x' : '-');
+	*path-- = ((var & S_IWOTH) ? 'w' : '-');
+	*path-- = ((var & S_IROTH) ? 'r' : '-');
+	*path-- = ((var & S_IXGRP) ? 'x' : '-');
+	*path-- = ((var & S_IWGRP) ? 'w' : '-');
+	*path-- = ((var & S_IRGRP) ? 'r' : '-');
+	*path-- = ((var & S_IXUSR) ? 'x' : '-');
+	*path-- = ((var & S_IWUSR) ? 'w' : '-');
+	*path-- = ((var & S_IRUSR) ? 'r' : '-');
+	ft_put_onwork_symbole(var, path);
 }
 
-void				ft_put_onwork_value_loop(int n)
+void				ft_put_onwork_value_loop(int n, char *path)
 {
-	char			c;
-
 	if (n >= 10)
 	{
-		ft_put_onwork_value_loop(n / 10);
-		c = n % 10 + '0';
-		write(1, &c, 1);
+		ft_put_onwork_value_loop(n / 10, path - 1);
+		*path-- = n % 10 + '0';
 	}
 	else
-	{
-		c = n + '0';
-		write(1, &c, 1);
-	}
+		*path-- = n + '0';
 }
 
-void				ft_put_onwork_value(int n)
+void				ft_put_onwork_value(int n, char *path)
 {
 	if (n == -2147483648)
-		write(1, "-2147483648", 11);
+		ft_strcpy(path, "-2147483648");
+	else if (n == 0)
+		ft_strcpy(path - 1, "0");
 	else
 	{
 		if (n < 0)
 		{
-			write(1, "-", 1);
-			n = -n;
+			*path-- = '-';
+			n *= -1;
 		}
-		ft_put_onwork_value_loop(n);
+		ft_put_onwork_value_loop(n, path);
 	}
 }
 
-void				ft_put_onwork_owner(int uid)
+void				ft_put_onwork_owner(struct passwd *pw, char *path)
 {
-	struct passwd	*pw;
-
-	if (!(pw = getpwuid(uid)))
+	if (!(pw))
 		return ;
-	write(1, pw->pw_name, ft_strlen(pw->pw_name));
-	write(1, " ", 1);
+	ft_strcpyo(path, pw->pw_name);
 }
 
-void				ft_put_onwork_group(int gid)
+void				ft_put_onwork_group(struct group *gr, char *path)
 {
-	struct group	*gr;
-
-	if (!(gr = getgrgid(gid)))
+	if (!(gr))
 		return ;
-	write(1, gr->gr_name, ft_strlen(gr->gr_name));
-	write(1, " ", 1);
+	ft_strcpyo(path, gr->gr_name);
 }
 
-void		ft_put_onwork_time(BYPASS filestat, int date, t_times times)
+void				ft_put_onwork_time(BYPASS filestat, int date, t_times times, char *path)
 {
 	if (date > times.timelimit && date < times.launchtime)
-		write(1, ctime(&(filestat).st_mtime) + 4, 12);
+		ft_strncpyo(path, ctime(&(filestat).st_mtime) + 4, 12);
 	else
 	{
-		write(1, ctime(&(filestat).st_mtime) + 4, 7);
-		write(1, " ", 1);
-		write(1, ctime(&(filestat).st_mtime) + 20, 4);
+		ft_strncpyo(path, ctime(&(filestat).st_mtime) + 4, 7);
+		ft_strncpyo(path + 8, ctime(&(filestat).st_mtime) + 20, 4);
 	}
-	write(1, " ", 1);
+	// write(1, " ", 1);
+}
+
+void				ft_getlens(t_file *head, char lens[][5])
+{
+	t_file			*ptr;
+	char			tmp;
+
+	(*lens)[0] = 0;
+	(*lens)[1] = 0;
+	(*lens)[2] = 0;
+	(*lens)[3] = 0;
+	ptr = head;
+	while (ptr)
+	{
+	// dprintf(1, "Owner is %s\n", ptr->name);
+	// 	tmp = 2;
+		tmp = ft_intlen(ptr->filestat.st_nlink);
+		if ((*lens)[0] < tmp)
+			(*lens)[0] = tmp;
+		tmp = ft_strlen(ptr->owner);
+		if ((*lens)[1] < tmp)
+			(*lens)[1] = tmp;
+		tmp = ft_strlen(ptr->group);
+		if ((*lens)[2] < tmp)
+			(*lens)[2] = tmp;
+		tmp = ft_intlen(ptr->filestat.st_size);
+		// dprintf(1, "Size of %i = %i\n", (int)ptr->filestat.st_size, tmp);
+		if ((*lens)[3] < tmp)
+			(*lens)[3] = tmp;
+		ptr = ptr->next;
+	}
 }
 
 void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 {
 	t_file	*ptr;
 	char	*buff;
+	char	*tmp;
+	char	*p;
+	char	lens[5];
 
 	if (!(buff = (char *)ft_memalloc(sizeof(char) * 256)))
 		return ;
+	if (flags & LL_FLAG)
+	{
+		ptr = head;
+		while (ptr)
+		{
+			ptr->pw = getpwuid(ptr->filestat.st_uid);
+			ptr->gr = getgrgid(ptr->filestat.st_gid);
+			ptr->owner = ptr->pw->pw_name;
+			ptr->group = ptr->gr->gr_name;
+			ptr = ptr->next;
+		}
+		ft_getlens(head, &lens);//1 + 1 + 2 + 2 + 1
+		lens[4] = 11 + lens[0] + lens[1] + lens[2] + lens[3] + 7 + 20;
+		tmp = (char *)malloc(sizeof(char) * (lens[4]));
+		*(tmp + lens[4]--) = '\n';
+		dprintf(1, "Lens : %i %i %i %i\n", lens[0], lens[1], lens[2], lens[3]);
+	}
 	ptr = head;
 	while (ptr)
 	{
-		// dprintf(1, "Name : %s\n", ptr->name);
-		if (0 && flags & LL_FLAG)
+		if (flags & LL_FLAG)
 		{
-			ft_put_onwork_permissions(ptr->filestat.st_mode);
-			ft_put_onwork_value(ptr->filestat.st_nlink);
-			write(1, " ", 1);
-			ft_put_onwork_owner(ptr->filestat.st_gid);
-			ft_put_onwork_group(ptr->filestat.st_uid);
-			ft_put_onwork_value(ptr->filestat.st_size);
-			write(1, " ", 1);
-			write(1, " ", 1);
-			ft_put_onwork_time(ptr->filestat, ptr->date, times);
-			write(1, ptr->name, ft_strlen(ptr->name));
-			if (S_ISLNK(ptr->filestat.st_mode))
-			{
-				write(1, " -> ", 4);
-				readlink(ptr->path, buff, 256);
-				write(1, buff, 256);
-				ft_strclr(buff);
-			}
+			ft_memset(tmp, ' ', lens[4]);
+			p = tmp;
+			p += 11;
+			ft_put_onwork_permissions(ptr->filestat.st_mode, p - 2);
+			p += lens[0];
+			ft_put_onwork_value(ptr->filestat.st_nlink, p);
+			p += 2;
+			ft_put_onwork_owner(ptr->pw, p);
+			p += lens[1];
+			p += 2;
+			ft_put_onwork_group(ptr->gr, p);
+			p += lens[2] + lens[3] + 1;
+			ft_put_onwork_value(ptr->filestat.st_size, p);
+			p += 2;
+			ft_put_onwork_time(ptr->filestat, ptr->date, times, p);
+			dprintf(1, "\t\tTest : '%s'\n", tmp);
+
+			// write(1, ptr->name, ft_strlen(ptr->name));
+			// if (S_ISLNK(ptr->filestat.st_mode))
+			// {
+			// 	write(1, " -> ", 4);
+			// 	readlink(ptr->path, buff, 256);
+			// 	write(1, buff, 256);
+			// 	ft_strclr(buff);
+			// }
+			// write(1, "\n", 1);
 		}
 		else
+		{
 			write(1, ptr->name, ft_strlen(ptr->name));
-		write(1, "\n", 1);
+			write(1, "\n", 1);
+		}
 		// write(1, "LOL\n", 4);
 		ptr = ptr->next;
 	}
+	free(buff);
 	times.timelimit++;
 }
 

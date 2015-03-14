@@ -51,6 +51,8 @@ typedef struct		s_file
 	char			*psize;
 	char			*pdate;
 	BYPASS			filestat;
+	struct passwd	*pw;
+	struct group	*gr;
 	struct s_file	*next;
 }					t_file;
 
@@ -83,6 +85,8 @@ char				*ft_ltoa(long long int n);
 char				*ft_strrev(char *str);
 int					ft_atoi(const char *str);
 char				*ft_strcpy(char *dst, const char *src);
+char				*ft_strcpyo(char *dst, const char *src);
+char				*ft_strncpyo(char *dst, const char *src, size_t n);
 char				ft_getsymbole(struct stat filestat);
 char				*ft_get_permissions(struct stat filestat);
 char				*ft_get_owner(struct stat filestat);
@@ -104,6 +108,9 @@ void				ft_freefiles2(t_file **head, char flags);
 void				ft_freefilestest(t_file **head);
 void				ft_strclr(const char *s);
 void				*ft_memalloc(size_t size);
+int					ft_intlen(int n);
+void				ft_bzero(void *s, size_t n);
+void				*ft_memset(void *b, int c, size_t len);
 
 # define LL_FLAG 0b00000001
 # define UR_FLAG 0b00000010
