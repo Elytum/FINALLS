@@ -97,6 +97,7 @@ int					ft_cmpdate(t_file *s1, t_file *s2);
 int					ft_cmprdate(t_file *s1, t_file *s2);
 compare				ft_get_function(char flags);
 void				ft_putfilesdebug(t_file *head, char flags, t_times times);
+void				ft_putfiles(t_file *head, char flags, t_times times);
 void				ft_put_permission_denied(char *path);
 void				ft_add_new_file2(t_file **first, t_info info, compare f, char flags);
 void				ft_split_order_type(t_paths *paths, t_file **files,

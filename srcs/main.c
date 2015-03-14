@@ -62,8 +62,8 @@ void		ft_manage_first(char **args, char flags)
 	/**/ft_split_order_type(paths, &files, f);
 	if (ft_any_file(files))
 	{
-		ft_putfilesdebug(files, flags, times);
-		ptr = ft_extractpaths(files);
+		ft_putfiles(files, flags, times);
+		ptr = ft_simple_extractpaths(files);
 	}
 	else if (files && !files->next)
 	{
@@ -80,11 +80,12 @@ void		ft_manage_first(char **args, char flags)
 		write(1, "\n", 1);
 		if (!*(p + 1))
 			flags |= SINGLE;
-	}
-	while (*p)
-	{
-		ft_manage_directory(*p, f, flags, times);
-		free(*p++);
+		while (*p)
+		{
+			// dprintf(1, "Path = %s\n", *p);
+			ft_manage_directory(*p, f, flags, times);
+			free(*p++);
+		}
 	}
 	free(ptr);
 }

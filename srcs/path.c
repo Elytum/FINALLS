@@ -118,9 +118,7 @@ char			**ft_extractpaths(t_file *head)
 		if (S_ISDIR(ptr->filestat.st_mode) &&
 			!((ptr->name[0] == '.' && !(ptr->name[1])) ||
 			(ptr->name[0] == '.' && ptr->name[1] == '.' && !ptr->name[2])))
-		{
 			*p++ = ft_strdup(ptr->path);
-		}
 		ptr = ptr->next;
 	}
 	*p = NULL;
@@ -138,7 +136,8 @@ char			**ft_simple_extractpaths(t_file *head)
 	ptr = head;
 	while (ptr)
 	{
-		len++;
+		if (S_ISDIR(ptr->filestat.st_mode))
+			len++;
 		ptr = ptr->next;
 	}
 	if (!(paths = (char **)malloc(sizeof(char *) * (len + 1))))
@@ -147,7 +146,8 @@ char			**ft_simple_extractpaths(t_file *head)
 	ptr = head;
 	while (ptr)
 	{
-		*p++ = ft_strdup(ptr->path);
+		if (S_ISDIR(ptr->filestat.st_mode))
+			*p++ = ft_strdup(ptr->path);
 		ptr = ptr->next;
 	}
 	*p = NULL;

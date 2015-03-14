@@ -118,6 +118,82 @@ void				ft_getlens(t_file *head, char lens[][5])
 	}
 }
 
+
+void		ft_putfiles(t_file *head, char flags, t_times times)
+{
+	t_file	*ptr;
+	char	*buff;
+	char	*tmp;
+	char	*p;
+	char	lens[5];
+
+	if (!(buff = (char *)ft_memalloc(sizeof(char) * 256)))
+		return ;
+	if (flags & LL_FLAG)
+	{
+		ptr = head;
+		while (ptr)
+		{
+			ptr->pw = getpwuid(ptr->filestat.st_uid);
+			ptr->gr = getgrgid(ptr->filestat.st_gid);
+			ptr->owner = ptr->pw->pw_name;
+			ptr->group = ptr->gr->gr_name;
+			ptr = ptr->next;
+		}
+		ft_getlens(head, &lens);//1 + 1 + 2 + 2 + 1
+		lens[4] = 11 + lens[0] + lens[1] + lens[2] + lens[3] + 7 + 13;
+		if (!(tmp = (char *)malloc(sizeof(char) * (lens[4]))))
+			return ;
+		*(tmp + lens[4]) = '\0';
+	}
+	ptr = head;
+	while (ptr)
+	{
+		if (S_ISREG(ptr->filestat.st_mode))
+		{
+			if (flags & LL_FLAG)
+			{
+				ft_memset(tmp, ' ', lens[4]);
+				p = tmp;
+				p += 11;
+				ft_put_onwork_permissions(ptr->filestat.st_mode, p - 2);
+				p += lens[0];
+				ft_put_onwork_value(ptr->filestat.st_nlink, p);
+				p += 2;
+				ft_put_onwork_owner(ptr->pw, p);
+				p += lens[1];
+				p += 2;
+				ft_put_onwork_group(ptr->gr, p);
+				p += lens[2] + lens[3] + 1;
+				ft_put_onwork_value(ptr->filestat.st_size, p);
+				p += 2;
+				ft_put_onwork_time(ptr->filestat, ptr->date, times, p);
+				write(1, tmp, lens[4]);
+
+				write(1, ptr->name, ft_strlen(ptr->name));
+				if (S_ISLNK(ptr->filestat.st_mode))
+				{
+					write(1, " -> ", 4);
+					readlink(ptr->path, buff, 256);
+					write(1, buff, 256);
+					ft_strclr(buff);
+				}
+				write(1, "\n", 1);
+			}
+			else
+			{
+				write(1, ptr->name, ft_strlen(ptr->name));
+				write(1, "\n", 1);
+			}
+		}
+		ptr = ptr->next;
+	}
+	if (flags & LL_FLAG)
+		free(tmp);
+	free(buff);
+	times.timelimit++;
+}
+
 void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 {
 	t_file	*ptr;
