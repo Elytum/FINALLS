@@ -45,7 +45,7 @@ void			ft_add_new_file2(t_file **first, t_info info, compare f, char flags)
 		!(newf = (t_file *)malloc(sizeof(t_file))))
 		return ;
 	newf->name = ft_strdup(info.name);
-	newf->path = info.path;
+	newf->path = ft_strdup(info.path);
 	newf->filestat = filestat;
 	newf->date = filestat.st_mtime;
 	newf->next = NULL;

@@ -100,3 +100,12 @@ char		*ft_strcpy(char *dst, const char *src)
 	dst[c] = '\0';
 	return (dst);
 }
+
+void        ft_strclr(const char *s)
+{
+    char    *ptr;
+
+    ptr = (char *)s;
+    while (*ptr)
+        *ptr++ = '\0';
+}

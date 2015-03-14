@@ -50,6 +50,7 @@ void		ft_freefilestest(t_file **head)
 	// free(ptr->permissions);
 	// free(ptr->phard_links);
 
+		free(ptr->path);
 		past = ptr;
 		ptr = ptr->next;
 		free(past);
@@ -64,6 +65,7 @@ void		ft_freefiles2(t_file **head, char flags)
 	ptr = *head;
 	while (ptr)
 	{
+		free(ptr->path);
 		free(ptr->name);
 		past = ptr;
 		ptr = ptr->next;

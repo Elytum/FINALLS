@@ -20,6 +20,7 @@ NAME = ft_ls
 FILES =	main.c	\
 		libft.c	\
 		libft2.c	\
+		libft3.c	\
 		flags.c	\
 		path.c	\
 		get_info.c	\

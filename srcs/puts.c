@@ -101,12 +101,15 @@ void		ft_put_onwork_time(BYPASS filestat, int date, t_times times)
 void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 {
 	t_file	*ptr;
+	char	*buff;
 
+	if (!(buff = (char *)ft_memalloc(sizeof(char) * 256)))
+		return ;
 	ptr = head;
 	while (ptr)
 	{
 		// dprintf(1, "Name : %s\n", ptr->name);
-		if (flags & LL_FLAG)
+		if (0 && flags & LL_FLAG)
 		{
 			ft_put_onwork_permissions(ptr->filestat.st_mode);
 			ft_put_onwork_value(ptr->filestat.st_nlink);
@@ -117,31 +120,17 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 			write(1, " ", 1);
 			write(1, " ", 1);
 			ft_put_onwork_time(ptr->filestat, ptr->date, times);
-			// dprintf(1, "Date = %i ", ptr->date);
-			// if (ptr->date > times.timelimit && ptr->date < times.launchtime)
-			// 	write(1, ctime(&(ptr->filestat).st_mtime) + 4, 12);
-			// else
-			// {
-			// 	write(1, ctime(&(ptr->filestat).st_mtime) + 4, 7);
-			// 	write(1, " ", 1);
-			// 	write(1, ctime(&(ptr->filestat).st_mtime) + 20, 4);
-			// }
-			// write(1, " ", 1);
-			// if ((pw = getpwuid(ptr->filestat.st_uid)))
-			// {
-			// 	write(1, pw->pw_name, ft_strlen(pw->pw_name));
-			// 	write(1, " ", 1);
-			// 	endpwent();
-			// }
-			// write(1, ptr->phard_links, ft_strlen(ptr->phard_links));
-			// write(1, " ", 1);
-			// write(1, ptr->owner, ft_strlen(ptr->owner));
-			// write(1, " ", 1);
-			// dprintf(1, "Test : %s\n", pw->pw_name);
-			// write(1, ptr->psize, ft_strlen(ptr->psize));
-			// write(1, " ", 1);
+			write(1, ptr->name, ft_strlen(ptr->name));
+			if (S_ISLNK(ptr->filestat.st_mode))
+			{
+				write(1, " -> ", 4);
+				readlink(ptr->path, buff, 256);
+				write(1, buff, 256);
+				ft_strclr(buff);
+			}
 		}
-		write(1, ptr->name, ft_strlen(ptr->name));
+		else
+			write(1, ptr->name, ft_strlen(ptr->name));
 		write(1, "\n", 1);
 		// write(1, "LOL\n", 4);
 		ptr = ptr->next;

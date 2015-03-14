@@ -102,6 +102,8 @@ char				**ft_extractpaths(t_file *head);
 void				ft_freefiles(t_file **head);
 void				ft_freefiles2(t_file **head, char flags);
 void				ft_freefilestest(t_file **head);
+void				ft_strclr(const char *s);
+void				*ft_memalloc(size_t size);
 
 # define LL_FLAG 0b00000001
 # define UR_FLAG 0b00000010
