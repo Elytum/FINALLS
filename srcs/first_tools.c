@@ -41,7 +41,7 @@ void			ft_add_new_file2(t_file **first, t_info info, compare f, char flags)
 	t_file		*newf;
 	BYPASS		filestat;
 
-	if ((stat(info.path, &filestat) == -1) ||
+	if ((lstat(info.path, &filestat) == -1) ||
 		!(newf = (t_file *)malloc(sizeof(t_file))))
 		return ;
 	newf->name = ft_strdup(info.name);

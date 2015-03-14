@@ -3,17 +3,17 @@
 
 void				ft_put_onwork_symbole(mode_t var)
 {
-	if ((var & 0170000) == 0040000)
-		write(1, "d", 1);
-	if ((var & 0170000) == 0120000)
+	if (S_ISLNK(var))
 		write(1, "l", 1);
-	if ((var & 0170000) == 0020000)
+	else if ((var & 0170000) == 0040000)
+		write(1, "d", 1);
+	else if ((var & 0170000) == 0020000)
 		write(1, "c", 1);
-	if ((var & 0170000) == 0060000)
+	else if ((var & 0170000) == 0060000)
 		write(1, "b", 1);
-	if ((var & 0170000) == 0010000)
+	else if ((var & 0170000) == 0010000)
 		write(1, "p", 1);
-	if ((var & 0170000) == 0140000)
+	else if ((var & 0170000) == 0140000)
 		write(1, "s", 1);
 	write(1, "-", 1);
 }
@@ -85,6 +85,19 @@ void				ft_put_onwork_group(int gid)
 	write(1, " ", 1);
 }
 
+void		ft_put_onwork_time(BYPASS filestat, int date, t_times times)
+{
+	if (date > times.timelimit && date < times.launchtime)
+		write(1, ctime(&(filestat).st_mtime) + 4, 12);
+	else
+	{
+		write(1, ctime(&(filestat).st_mtime) + 4, 7);
+		write(1, " ", 1);
+		write(1, ctime(&(filestat).st_mtime) + 20, 4);
+	}
+	write(1, " ", 1);
+}
+
 void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 {
 	t_file	*ptr;
@@ -103,16 +116,17 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 			ft_put_onwork_value(ptr->filestat.st_size);
 			write(1, " ", 1);
 			write(1, " ", 1);
+			ft_put_onwork_time(ptr->filestat, ptr->date, times);
 			// dprintf(1, "Date = %i ", ptr->date);
-			if (ptr->date > times.timelimit && ptr->date < times.launchtime)
-				write(1, ctime(&(ptr->filestat).st_mtime) + 4, 12);
-			else
-			{
-				write(1, ctime(&(ptr->filestat).st_mtime) + 4, 7);
-				write(1, " ", 1);
-				write(1, ctime(&(ptr->filestat).st_mtime) + 20, 4);
-			}
-			write(1, " ", 1);
+			// if (ptr->date > times.timelimit && ptr->date < times.launchtime)
+			// 	write(1, ctime(&(ptr->filestat).st_mtime) + 4, 12);
+			// else
+			// {
+			// 	write(1, ctime(&(ptr->filestat).st_mtime) + 4, 7);
+			// 	write(1, " ", 1);
+			// 	write(1, ctime(&(ptr->filestat).st_mtime) + 20, 4);
+			// }
+			// write(1, " ", 1);
 			// if ((pw = getpwuid(ptr->filestat.st_uid)))
 			// {
 			// 	write(1, pw->pw_name, ft_strlen(pw->pw_name));

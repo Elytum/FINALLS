@@ -41,7 +41,7 @@ void			ft_cleanpath(t_paths **paths)
 	past = NULL;
 	while (ptr)
 	{
-		if (stat(ptr->path, &statbuf) == -1)
+		if (lstat(ptr->path, &statbuf) == -1)
 		{
 			write(1, "ls: ", 4), write(1, ptr->path, ft_strlen(ptr->path));
 			write(1, ": No such file or directory\n", 28);
@@ -100,7 +100,6 @@ size_t			ft_nbofpaths(t_file *head)
 			len++;
 		ptr = ptr->next;
 	}
-	dprintf(1, "Len = %zu\n", len);
 	return (len);
 }
 
