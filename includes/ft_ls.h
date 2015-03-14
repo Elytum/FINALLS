@@ -50,8 +50,16 @@ typedef struct		s_file
 	char			*phard_links;
 	char			*psize;
 	char			*pdate;
+	BYPASS			filestat;
 	struct s_file	*next;
 }					t_file;
+
+typedef struct		s_info
+{
+	char			*name;
+	char			*path;
+}					t_info;
+
 typedef int			(*compare)(t_file *f1, t_file *f2);
 
 size_t				ft_strlen(char *str);
@@ -80,15 +88,14 @@ int					ft_cmprdate(t_file *s1, t_file *s2);
 compare				ft_get_function(char flags);
 void				ft_putfilesdebug(t_file *head, char flags);
 void				ft_put_permission_denied(char *path);
-void				ft_add_new_file2(t_file **first, char *name,
-								char *path, compare f);
+void				ft_add_new_file2(t_file **first, t_info info, compare f, char flags);
 void				ft_split_order_type(t_paths *paths, t_file **files,
 									compare f);
 void				ft_manage_directory(char *dir, compare f, char flags, int len);
 char				**ft_extractpaths(t_file *head);
 void				ft_freefiles(t_file **head);
+void				ft_freefiles2(t_file **head, char flags);
 void				ft_freefilestest(t_file **head);
-void		ft_freefiles2(t_file **head);
 
 # define LL_FLAG 0b00000001
 # define UR_FLAG 0b00000010

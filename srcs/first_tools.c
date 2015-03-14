@@ -28,34 +28,24 @@ static void		ft_add_new_file(t_file **first, char *path,
 
 	if (!(newf = (t_file *)malloc(sizeof(t_file))))
 		return ;
-	newf->name = path;
-	newf->path = path;
-	newf->owner = ft_get_owner(filestat);
-	newf->group = ft_get_group(filestat);
-	newf->date = filestat.st_mtime;
-	newf->size = filestat.st_size;
-	newf->permissions = ft_get_permissions(filestat);
-	newf->hard_links = filestat.st_nlink;
+/**/newf->name = ft_strdup(path);
+/**/newf->path = ft_strdup(path);
+	newf->filestat = filestat;
 	newf->next = NULL;
 	ft_insert_new_file(first, newf, f);
 }
 
-void			ft_add_new_file2(t_file **first, char *name,
-								char *path, compare f)
+void			ft_add_new_file2(t_file **first, t_info info, compare f, char flags)
 {
 	t_file		*newf;
 	BYPASS		filestat;
 
-	if ((stat(path, &filestat) == -1) ||
+	if ((stat(info.path, &filestat) == -1) ||
 		!(newf = (t_file *)malloc(sizeof(t_file))))
 		return ;
-	newf->name = name;
-	newf->path = ft_strdup(path);
-	newf->owner = ft_get_owner(filestat);
-	newf->group = ft_get_group(filestat);
-	newf->date = filestat.st_mtime;
-	newf->size = filestat.st_size;
-	newf->permissions = ft_get_permissions(filestat);
+	newf->name = info.name;
+	newf->path = ft_strdup(info.path);
+	newf->filestat = filestat;
 	newf->next = NULL;
 	ft_insert_new_file(first, newf, f);
 }
@@ -79,24 +69,25 @@ void				ft_manage_directory(char *dir, compare f, char flags, int len)
 {
 	DIR				*dirp;
 	struct dirent	*direntp;
-	char			*path;
+	// char			*path;
 	char			**paths;
 	char			*ptr;
 	char			**pptr;
 	t_file			*files;
+	t_info			info;
 
 	write(1, "\n", 1);
 	write(1, dir, len);
 	write(1, ":\n", 2);
-	if (!(path = (char *)malloc(sizeof(char) * (256 + len))))
+	if (!(info.path = (char *)malloc(sizeof(char) * (256 + len))))
 		return ;
 	if (!(dirp = opendir(dir)))
 	{
 		ft_put_permission_denied(dir);
 		return ;
 	}
-	ft_strcpy(path, dir);
-	ptr = path + len;
+	ft_strcpy(info.path, dir);
+	ptr = info.path + len;
 	if (*(ptr - 1) != '/')
 		*ptr++ = '/';
 	*ptr = '\0';
@@ -108,12 +99,28 @@ void				ft_manage_directory(char *dir, compare f, char flags, int len)
 			break ;
 		if (flags & LA_FLAG || direntp->d_name[0] != '.')
 		{
+			info.name = direntp->d_name;
 			ft_strcpy(ptr, direntp->d_name);
-			ft_add_new_file2(&files, direntp->d_name, path, f);
+			ft_add_new_file2(&files, info, f, flags);
 		}
 	}
-	free(path);
-	ft_freefiles2(&files);
+	free(info.path);
+	ft_putfilesdebug(files, flags);
+	paths = ft_extractpaths(files);
+	ft_freefiles2(&files, flags);
+	if (flags & UR_FLAG && paths)
+	{
+		pptr = paths;
+		while (*pptr)
+		{
+	// 		// dprintf(1, "*pptr = '%s'\n", *pptr);
+			ft_manage_directory(*pptr, f, flags, ft_strlen(*pptr));
+			free(*pptr++);
+		}
+	}
+	free(paths);
+
+	
 					// ft_putfilesdebug(files, flags);
 					// if (flags & UR_FLAG)
 						// paths = ft_extractpaths(files);

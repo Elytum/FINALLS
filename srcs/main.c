@@ -43,7 +43,7 @@ void		ft_manage_first(char **args, char flags)
 	// ft_putfilesdebug(files, flags);
 
 	ptr = ft_extractpaths(files);
-ft_freefilestest(&files);
+	ft_freefilestest(&files);
 	p = ptr;
 	if (*p)
 		write(1, "\n", 1);

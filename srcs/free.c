@@ -56,7 +56,7 @@ void		ft_freefilestest(t_file **head)
 	}
 }
 
-void		ft_freefiles2(t_file **head)
+void		ft_freefiles2(t_file **head, char flags)
 {
 	t_file	*ptr;
 	t_file	*past;
@@ -64,13 +64,10 @@ void		ft_freefiles2(t_file **head)
 	ptr = *head;
 	while (ptr)
 	{
-		//newf->name = name;
-		free(ptr->path);// = ft_strdup(path);
-		free(ptr->owner);// = ft_get_owner(filestat);
-		free(ptr->group);// = ft_get_group(filestat);
-		free(ptr->permissions);// = ft_get_permissions(filestat);
+		free(ptr->path);
 		past = ptr;
 		ptr = ptr->next;
 		free(past);
+
 	}
 }

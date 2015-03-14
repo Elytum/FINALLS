@@ -94,12 +94,13 @@ size_t			ft_nbofpaths(t_file *head)
 	ptr = head;
 	while (ptr)
 	{
-		if (ptr->permissions[0] == 'd' &&
+		if (S_ISDIR(ptr->filestat.st_mode) &&
 			!((ptr->name[0] == '.' && !(ptr->name[1])) ||
 			(ptr->name[0] == '.' && ptr->name[1] == '.' && !ptr->name[2])))
 			len++;
 		ptr = ptr->next;
 	}
+	dprintf(1, "Len = %zu\n", len);
 	return (len);
 }
 
@@ -115,7 +116,7 @@ char			**ft_extractpaths(t_file *head)
 	ptr = head;
 	while (ptr)
 	{
-		if (ptr->permissions[0] == 'd' &&
+		if (S_ISDIR(ptr->filestat.st_mode) &&
 			!((ptr->name[0] == '.' && !(ptr->name[1])) ||
 			(ptr->name[0] == '.' && ptr->name[1] == '.' && !ptr->name[2])))
 		{
