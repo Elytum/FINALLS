@@ -28,8 +28,8 @@ static void		ft_add_new_file(t_file **first, char *path,
 
 	if (!(newf = (t_file *)malloc(sizeof(t_file))))
 		return ;
-/**/newf->name = ft_strdup(path);
-/**/newf->path = ft_strdup(path);
+/**/newf->name = path;
+/**/newf->path = path;
 	newf->filestat = filestat;
 	newf->next = NULL;
 	ft_insert_new_file(first, newf, f);

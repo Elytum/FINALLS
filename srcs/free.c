@@ -43,12 +43,12 @@ void		ft_freefilestest(t_file **head)
 
 	free(ptr->owner);
 	free(ptr->group);
-	free(ptr->pdate);
+	// free(ptr->pdate);
 	// ptr->size = filestat.st_size;
-	free(ptr->psize);
+	// free(ptr->psize);
 	// ptr->psize = NULL;
-	free(ptr->permissions);
-	free(ptr->phard_links);
+	// free(ptr->permissions);
+	// free(ptr->phard_links);
 
 		past = ptr;
 		ptr = ptr->next;

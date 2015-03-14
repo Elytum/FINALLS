@@ -1,10 +1,3 @@
-// #include "../includes/ft_ls.h"
-// #include <grp.h>
-// #include <pwd.h>
-// #include <sys/stat.h>
-// #include <sys/types.h>
-
-
 #include "../includes/ft_ls.h"
 #include <unistd.h>
 #include <sys/stat.h>

@@ -40,7 +40,7 @@ void		ft_manage_first(char **args, char flags)
 		ft_addpath(&paths, *ptr++);
 	ft_cleanpath(&paths);
 	/**/ft_split_order_type(paths, &files, f);
-	// ft_putfilesdebug(files, flags);
+	ft_putfilesdebug(files, flags);
 
 	ptr = ft_extractpaths(files);
 	ft_freefilestest(&files);
@@ -52,7 +52,7 @@ void		ft_manage_first(char **args, char flags)
 		ft_manage_directory(*p, f, flags, ft_strlen(*p));
 		free(*p++);
 	}
-// free(ptr);
+	free(ptr);
 }
 
 int			main(int ac, char **av)
