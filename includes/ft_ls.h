@@ -113,6 +113,7 @@ int					ft_intlen(int n);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memset(void *b, int c, size_t len);
 char				**ft_simple_extractpaths(t_file *head);
+void				ft_putsize_t(size_t n);
 
 # define LL_FLAG 0b00000001
 # define UR_FLAG 0b00000010

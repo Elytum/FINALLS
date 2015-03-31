@@ -217,7 +217,9 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 		}
 		ft_getlens(head, &lens);//1 + 1 + 2 + 2 + 1
 		lens[4] = 11 + lens[0] + lens[1] + lens[2] + lens[3] + 7 + 13;
-		if (!(tmp = (char *)malloc(sizeof(char) * (lens[4]))))
+		// if (!(tmp = (char *)malloc(sizeof(char) * (lens[4]))))
+			// return ;
+		if (!(tmp = (char *)ft_memalloc(sizeof(char) * (lens[4] + 1))))
 			return ;
 		*(tmp + lens[4]) = '\0';
 	}

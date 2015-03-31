@@ -1,4 +1,5 @@
 #include "../includes/ft_ls.h"
+#include <unistd.h>
 
 static void		ft_insert_new_file(t_file **first, t_file *newf, compare f)
 {
@@ -81,7 +82,9 @@ void				ft_puttotal(t_file *files)
 		total += ptr->filestat.st_blocks;
 		ptr = ptr->next;
 	}
-	dprintf(1, "Total = %zu\n", total);
+	write(1, "Total ", 6);
+	ft_putsize_t(total);
+	write(1, "\n", 1);
 }
 
 void				ft_manage_directory(char *dir, compare f, char flags, t_times times)

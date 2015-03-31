@@ -21,6 +21,7 @@ FILES =	main.c	\
 		libft.c	\
 		libft2.c	\
 		libft3.c	\
+		libft4.c	\
 		flags.c	\
 		path.c	\
 		comparisons.c	\

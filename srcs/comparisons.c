@@ -12,12 +12,23 @@ int			ft_cmprname(t_file *s1, t_file *s2)
 
 int			ft_cmpdate(t_file *s1, t_file *s2)
 {
-	return (s2->filestat.st_mtime - s1->filestat.st_mtime);
+	// return (s2->filestat.st_mtime - s1->filestat.st_mtime);
+	int		ret;
+
+	ret = s2->filestat.st_mtime - s1->filestat.st_mtime;
+	if (!ret)
+		ret = ft_strcmp(s1->name, s2->name);
+	return (ret);
 }
 
 int			ft_cmprdate(t_file *s1, t_file *s2)
 {
-	return (s1->filestat.st_mtime - s2->filestat.st_mtime);
+	int		ret;
+
+	ret = s1->filestat.st_mtime - s2->filestat.st_mtime;
+	if (!ret)
+		ret = ft_strcmp(s2->name, s1->name);
+	return (ret);
 }
 
 compare		ft_get_function(char flags)
