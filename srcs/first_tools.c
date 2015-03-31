@@ -37,7 +37,7 @@ static void		ft_add_new_file(t_file **first, char *path,
 	ft_insert_new_file(first, newf, f);
 }
 
-void			ft_add_new_file2(t_file **first, t_info info, compare f, char flags)
+void			ft_add_new_file2(t_file **first, t_info info, compare f, int flags)
 {
 	t_file		*newf;
 	BYPASS		filestat;
@@ -87,7 +87,7 @@ void				ft_puttotal(t_file *files)
 	write(1, "\n", 1);
 }
 
-void				ft_manage_directory(char *dir, compare f, char flags, t_times times)
+void				ft_manage_directory(char *dir, compare f, int flags, t_times times)
 {
 	DIR				*dirp;
 	struct dirent	*direntp;

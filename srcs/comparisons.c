@@ -48,7 +48,7 @@ int				ft_cmprsize(t_file *s1, t_file *s2)
 	return (ret);
 }
 
-static compare	ft_get_function_reverse(char flags)
+static compare	ft_get_function_reverse(int flags)
 {
 	if (flags & LT_FLAG)
 		return (&ft_cmprdate);
@@ -57,7 +57,7 @@ static compare	ft_get_function_reverse(char flags)
 	return (&ft_cmprname);
 }
 
-compare			ft_get_function(char flags)
+compare			ft_get_function(int flags)
 {
 	if (flags & LR_FLAG)
 		return (ft_get_function_reverse(flags));

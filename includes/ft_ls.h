@@ -74,9 +74,9 @@ size_t				ft_strlen(char *str);
 char				*ft_strdup(char *str);
 char				*ft_strndup(char *str, size_t n);
 int					ft_strcmp(const char *s1, const char *s2);
-void				ft_fillflag(char p, char *flags);
-char				ft_getflags(char ***str);
-void				ft_testflags(char flags);
+void				ft_fillflag(char p, int *flags);
+int					ft_getflags(char ***str);
+void				ft_testflags(int flags);
 void				ft_addpath(t_paths **paths, char *p);
 void				ft_putpath(t_paths *paths);
 void				ft_cleanpath(t_paths **paths);
@@ -95,17 +95,17 @@ int					ft_cmpname(t_file *s1, t_file *s2);
 int					ft_cmprname(t_file *s1, t_file *s2);
 int					ft_cmpdate(t_file *s1, t_file *s2);
 int					ft_cmprdate(t_file *s1, t_file *s2);
-compare				ft_get_function(char flags);
-void				ft_putfilesdebug(t_file *head, char flags, t_times times);
-void				ft_putfiles(t_file *head, char flags, t_times times);
+compare				ft_get_function(int flags);
+void				ft_putfilesdebug(t_file *head, int flags, t_times times);
+void				ft_putfiles(t_file *head, int flags, t_times times);
 void				ft_put_permission_denied(char *path);
-void				ft_add_new_file2(t_file **first, t_info info, compare f, char flags);
+void				ft_add_new_file2(t_file **first, t_info info, compare f, int flags);
 void				ft_split_order_type(t_paths *paths, t_file **files,
 									compare f);
-void				ft_manage_directory(char *dir, compare f, char flags, t_times times);
+void				ft_manage_directory(char *dir, compare f, int flags, t_times times);
 char				**ft_extractpaths(t_file *head);
 void				ft_freefiles(t_file **head);
-void				ft_freefiles2(t_file **head, char flags);
+void				ft_freefiles2(t_file **head, int flags);
 void				ft_freefilestest(t_file **head);
 void				ft_strclr(const char *s);
 void				*ft_memalloc(size_t size);
@@ -115,14 +115,15 @@ void				*ft_memset(void *b, int c, size_t len);
 char				**ft_simple_extractpaths(t_file *head);
 void				ft_putsize_t(size_t n);
 
-# define LL_FLAG 0b00000001
-# define UR_FLAG 0b00000010
-# define LA_FLAG 0b00000100
-# define LR_FLAG 0b00001000
-# define LT_FLAG 0b00010000
-# define US_FLAG 0b00100000
-# define SINGLE 0b10000000
-# define ERROR 0b10000000
+# define LL_FLAG 0b00000000000000000000000000000001
+# define UR_FLAG 0b00000000000000000000000000000010
+# define LA_FLAG 0b00000000000000000000000000000100
+# define LR_FLAG 0b00000000000000000000000000001000
+# define LT_FLAG 0b00000000000000000000000000010000
+# define US_FLAG 0b00000000000000000000000000100000
+# define UC_FLAG 0b00000000000000000000000001000000
+# define SINGLE  0b10000000000000000000000000000000
+# define ERROR   0b10000000000000000000000000000000
 # define ILLEGAL_OPTION "ls: illegal option -- "
 # define ILLEGAL_OPTION_SIZE 22
 # define USAGE1 "\nusage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1]"

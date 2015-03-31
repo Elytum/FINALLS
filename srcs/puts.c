@@ -119,7 +119,7 @@ void				ft_getlens(t_file *head, char lens[][5])
 }
 
 
-void		ft_putfiles(t_file *head, char flags, t_times times)
+void		ft_putfiles(t_file *head, int flags, t_times times)
 {
 	t_file	*ptr;
 	char	*buff;
@@ -129,7 +129,7 @@ void		ft_putfiles(t_file *head, char flags, t_times times)
 
 	if (!(buff = (char *)ft_memalloc(sizeof(char) * 256)))
 		return ;
-	if (flags & LL_FLAG)
+	if (flags & LL_FLAG && !(flags & UC_FLAG))
 	{
 		ptr = head;
 		while (ptr)
@@ -151,7 +151,7 @@ void		ft_putfiles(t_file *head, char flags, t_times times)
 	{
 		if (S_ISREG(ptr->filestat.st_mode))
 		{
-			if (flags & LL_FLAG)
+			if (flags & LL_FLAG && !(flags & UC_FLAG))
 			{
 				ft_memset(tmp, ' ', lens[4]);
 				p = tmp;
@@ -188,13 +188,13 @@ void		ft_putfiles(t_file *head, char flags, t_times times)
 		}
 		ptr = ptr->next;
 	}
-	if (flags & LL_FLAG)
+	if (flags & LL_FLAG && !(flags & UC_FLAG))
 		free(tmp);
 	free(buff);
 	times.timelimit++;
 }
 
-void		ft_putfilesdebug(t_file *head, char flags, t_times times)
+void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 {
 	t_file	*ptr;
 	char	*buff;
@@ -204,7 +204,7 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 
 	if (!(buff = (char *)ft_memalloc(sizeof(char) * 256)))
 		return ;
-	if (flags & LL_FLAG)
+	if (flags & LL_FLAG && !(flags & UC_FLAG))
 	{
 		ptr = head;
 		while (ptr)
@@ -224,7 +224,7 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 	ptr = head;
 	while (ptr)
 	{
-		if (flags & LL_FLAG)
+		if (flags & LL_FLAG && !(flags & UC_FLAG))
 		{
 			ft_memset(tmp, ' ', lens[4]);
 			p = tmp;
@@ -259,7 +259,7 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 		}
 		ptr = ptr->next;
 	}
-	if (flags & LL_FLAG)
+	if (flags & LL_FLAG && !(flags & UC_FLAG))
 		free(tmp);
 	free(buff);
 	times.timelimit++;

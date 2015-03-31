@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void			ft_fillflag(char p, char *flags)
+void			ft_fillflag(char p, int *flags)
 {
 	if (p == 'l')
 		(*flags) |= LL_FLAG;
@@ -28,6 +28,8 @@ void			ft_fillflag(char p, char *flags)
 		(*flags) |= LT_FLAG;
 	else if (p == 'S')
 		(*flags) |= US_FLAG;
+	else if (p == 'C')
+		(*flags) |= UC_FLAG;
 	else
 	{
 		write (1, ILLEGAL_OPTION, ILLEGAL_OPTION_SIZE);
@@ -37,10 +39,10 @@ void			ft_fillflag(char p, char *flags)
 	}
 }
 
-char			ft_getflags(char ***str)
+int			ft_getflags(char ***str)
 {
-	char		flags;
-	char		*p;
+	int		flags;
+	char	*p;
 
 	flags = 0;
 	while (*(*str))
@@ -65,7 +67,7 @@ char			ft_getflags(char ***str)
 	return (flags);
 }
 
-void			ft_testflags(char flags)
+void			ft_testflags(int flags)
 {
 	if (flags & LL_FLAG)
 		write(1, "l_Flag detected\n", 16);
@@ -79,4 +81,6 @@ void			ft_testflags(char flags)
 		write(1, "t_Flag detected\n", 16);
 	if (flags & US_FLAG)
 		write(1, "S_Flag detected\n", 16);
+	if (flags & UC_FLAG)
+		write(1, "C_Flag detected\n", 16);
 }

@@ -57,7 +57,7 @@ void		ft_freefilestest(t_file **head)
 	}
 }
 
-void		ft_freefiles2(t_file **head, char flags)
+void		ft_freefiles2(t_file **head, int flags)
 {
 	t_file	*ptr;
 	t_file	*past;

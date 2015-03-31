@@ -93,9 +93,15 @@ void		ft_manage_first(char **args, char flags)
 	free(ptr);
 }
 
+// void		ft_interact_flags(int *flags)
+// {
+// 	if ((*flags) & UC_FLAG)
+// 		(*flags) &= ~LL_FLAG;
+// }
+
 int			main(int ac, char **av)
 {
-	char	flags;
+	int	flags;
 	int		f;
 
 	flags = 0;
@@ -103,6 +109,7 @@ int			main(int ac, char **av)
 	av++;
 	if (ac > 1 && (flags = ft_getflags(&av)) & ERROR)
 		return (0);
+	// ft_interact_flags(&flags);
 	if (!*av)
 	{
 		av = (char **)malloc(sizeof(char *) * 2);
