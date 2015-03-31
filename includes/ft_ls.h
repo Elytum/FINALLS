@@ -120,6 +120,7 @@ void				ft_putsize_t(size_t n);
 # define LA_FLAG 0b00000100
 # define LR_FLAG 0b00001000
 # define LT_FLAG 0b00010000
+# define US_FLAG 0b00100000
 # define SINGLE 0b10000000
 # define ERROR 0b10000000
 # define ILLEGAL_OPTION "ls: illegal option -- "

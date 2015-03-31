@@ -26,6 +26,8 @@ void			ft_fillflag(char p, char *flags)
 		(*flags) |= LR_FLAG;
 	else if (p == 't')
 		(*flags) |= LT_FLAG;
+	else if (p == 'S')
+		(*flags) |= US_FLAG;
 	else
 	{
 		write (1, ILLEGAL_OPTION, ILLEGAL_OPTION_SIZE);
@@ -75,4 +77,6 @@ void			ft_testflags(char flags)
 		write(1, "r_Flag detected\n", 16);
 	if (flags & LT_FLAG)
 		write(1, "t_Flag detected\n", 16);
+	if (flags & US_FLAG)
+		write(1, "S_Flag detected\n", 16);
 }
