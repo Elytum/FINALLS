@@ -215,11 +215,9 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 			ptr->group = ptr->gr->gr_name;
 			ptr = ptr->next;
 		}
-		ft_getlens(head, &lens);//1 + 1 + 2 + 2 + 1
+		ft_getlens(head, &lens);
 		lens[4] = 11 + lens[0] + lens[1] + lens[2] + lens[3] + 7 + 13;
-		// if (!(tmp = (char *)malloc(sizeof(char) * (lens[4]))))
-			// return ;
-		if (!(tmp = (char *)ft_memalloc(sizeof(char) * (lens[4] + 1))))
+		if (!(tmp = (char *)malloc(sizeof(char) * (lens[4] + 1))))
 			return ;
 		*(tmp + lens[4]) = '\0';
 	}
@@ -244,7 +242,6 @@ void		ft_putfilesdebug(t_file *head, char flags, t_times times)
 			p += 2;
 			ft_put_onwork_time(ptr->filestat, ptr->date, times, p);
 			write(1, tmp, lens[4]);
-
 			write(1, ptr->name, ft_strlen(ptr->name));
 			if (S_ISLNK(ptr->filestat.st_mode))
 			{

@@ -12,7 +12,6 @@ int			ft_cmprname(t_file *s1, t_file *s2)
 
 int			ft_cmpdate(t_file *s1, t_file *s2)
 {
-	// return (s2->filestat.st_mtime - s1->filestat.st_mtime);
 	int		ret;
 
 	ret = s2->filestat.st_mtime - s1->filestat.st_mtime;

@@ -105,6 +105,8 @@ void				ft_manage_directory(char *dir, compare f, char flags, t_times times)
 		write(1, dir, len);
 		write(1, ":\n", 2);
 	}
+	else
+		flags &= ~SINGLE;
 	if (!(info.path = (char *)malloc(sizeof(char) * (256 + len))))
 		return ;
 	if (!(dirp = opendir(dir)))
