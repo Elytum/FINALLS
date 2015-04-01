@@ -41,7 +41,7 @@ char		ft_any_file(t_file *head)
 	return (0);
 }
 
-void		ft_manage_first(char **args, char flags)
+void		ft_manage_first(char **args, int flags)
 {
 	t_paths	*paths;
 	char	**ptr;
@@ -93,11 +93,11 @@ void		ft_manage_first(char **args, char flags)
 	free(ptr);
 }
 
-// void		ft_interact_flags(int *flags)
-// {
-// 	if ((*flags) & UC_FLAG)
-// 		(*flags) &= ~LL_FLAG;
-// }
+void		ft_interact_flags(int *flags)
+{
+	if ((*flags) & LF_FLAG)
+		(*flags) |= LA_FLAG;
+}
 
 int			main(int ac, char **av)
 {
@@ -109,7 +109,8 @@ int			main(int ac, char **av)
 	av++;
 	if (ac > 1 && (flags = ft_getflags(&av)) & ERROR)
 		return (0);
-	// ft_interact_flags(&flags);
+	// ft_testflags(flags);
+	ft_interact_flags(&flags);
 	if (!*av)
 	{
 		av = (char **)malloc(sizeof(char *) * 2);

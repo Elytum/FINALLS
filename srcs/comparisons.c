@@ -48,6 +48,13 @@ int				ft_cmprsize(t_file *s1, t_file *s2)
 	return (ret);
 }
 
+int				ft_anyway(t_file *s1, t_file *s2)
+{
+	return (1);
+	(void)s1;
+	(void)s2;
+}
+
 static compare	ft_get_function_reverse(int flags)
 {
 	if (flags & LT_FLAG)
@@ -59,6 +66,8 @@ static compare	ft_get_function_reverse(int flags)
 
 compare			ft_get_function(int flags)
 {
+	if (flags & LF_FLAG)
+		return (&ft_anyway);
 	if (flags & LR_FLAG)
 		return (ft_get_function_reverse(flags));
 	if (flags & LT_FLAG)

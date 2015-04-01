@@ -194,6 +194,21 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 	times.timelimit++;
 }
 
+void		ft_put_UF(t_file *file)
+{
+	if (file->filestat.st_mode & S_IFDIR)
+		write(1, "/", 1);
+	else if (S_ISLNK(file->filestat.st_mode))
+		write(1, "@", 1);
+	else if (S_ISSOCK(file->filestat.st_mode))
+		write(1, "=", 1);
+	//check whiteout
+	else if (S_ISFIFO(file->filestat.st_mode))
+		write(1, "|", 1);
+	else if (file->filestat.st_mode & S_IXUSR)
+		write(1, "*", 1);
+}
+
 void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 {
 	t_file	*ptr;
@@ -201,6 +216,7 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 	char	*tmp;
 	char	*p;
 	char	lens[5];
+	int		len;
 
 	if (!(buff = (char *)ft_memalloc(sizeof(char) * 256)))
 		return ;
@@ -242,7 +258,10 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 			p += 2;
 			ft_put_onwork_time(ptr->filestat, ptr->date, times, p);
 			write(1, tmp, lens[4]);
-			write(1, ptr->name, ft_strlen(ptr->name));
+			len = ft_strlen(ptr->name);
+			write(1, ptr->name, len);
+			if (flags & UF_FLAG)
+				ft_put_UF(ptr);
 			if (S_ISLNK(ptr->filestat.st_mode))
 			{
 				write(1, " -> ", 4);
@@ -254,7 +273,10 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 		}
 		else
 		{
-			write(1, ptr->name, ft_strlen(ptr->name));
+			len = ft_strlen(ptr->name);
+			write(1, ptr->name, len);
+			if (flags & UF_FLAG)
+				ft_put_UF(ptr);
 			write(1, "\n", 1);
 		}
 		ptr = ptr->next;
