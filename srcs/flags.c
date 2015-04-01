@@ -34,6 +34,10 @@ void			ft_fillflag(char p, int *flags)
 		(*flags) |= UF_FLAG;
 	else if (p == 'f')
 		(*flags) |= LF_FLAG;
+	else if (p == 'm')
+		(*flags) |= LM_FLAG;
+	else if (p == 'p')
+		(*flags) |= LP_FLAG;
 	else
 	{
 		write (1, ILLEGAL_OPTION, ILLEGAL_OPTION_SIZE);
@@ -91,4 +95,8 @@ void			ft_testflags(int flags)
 		write(1, "F_Flag detected\n", 16);
 	if (flags & LF_FLAG)
 		write(1, "f_Flag detected\n", 16);
+	if (flags & LM_FLAG)
+		write(1, "m_Flag detected\n", 16);
+	if (flags & LP_FLAG)
+		write(1, "p_Flag detected\n", 16);
 }

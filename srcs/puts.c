@@ -194,19 +194,25 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 	times.timelimit++;
 }
 
-void		ft_put_UF(t_file *file)
+void		ft_put_after(t_file *file, int flags)
 {
-	if (file->filestat.st_mode & S_IFDIR)
-		write(1, "/", 1);
-	else if (S_ISLNK(file->filestat.st_mode))
-		write(1, "@", 1);
-	else if (S_ISSOCK(file->filestat.st_mode))
-		write(1, "=", 1);
-	//check whiteout
-	else if (S_ISFIFO(file->filestat.st_mode))
-		write(1, "|", 1);
-	else if (file->filestat.st_mode & S_IXUSR)
-		write(1, "*", 1);
+	if (flags & UF_FLAG)
+	{
+		if (file->filestat.st_mode & S_IFDIR)
+			write(1, "/", 1);
+		else if (S_ISLNK(file->filestat.st_mode))
+			write(1, "@", 1);
+		else if (S_ISSOCK(file->filestat.st_mode))
+			write(1, "=", 1);
+		//check whiteout
+		else if (S_ISFIFO(file->filestat.st_mode))
+			write(1, "|", 1);
+		else if (file->filestat.st_mode & S_IXUSR)
+			write(1, "*", 1);
+	}
+	else if (flags & LP_FLAG)
+		if (file->filestat.st_mode & S_IFDIR)
+			write(1, "/", 1);
 }
 
 void		ft_putfilesdebug(t_file *head, int flags, t_times times)
@@ -240,7 +246,15 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 	ptr = head;
 	while (ptr)
 	{
-		if (flags & LL_FLAG && !(flags & UC_FLAG))
+		if (flags & LM_FLAG)
+		{
+			write(1, ptr->name, ft_strlen(ptr->name));
+			if (ptr->next)
+				write(1, ", ", 2);
+			else
+				write(1, "\n", 1);
+		}
+		else if (flags & LL_FLAG && !(flags & UC_FLAG))
 		{
 			ft_memset(tmp, ' ', lens[4]);
 			p = tmp;
@@ -260,8 +274,7 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 			write(1, tmp, lens[4]);
 			len = ft_strlen(ptr->name);
 			write(1, ptr->name, len);
-			if (flags & UF_FLAG)
-				ft_put_UF(ptr);
+			ft_put_after(ptr, flags);
 			if (S_ISLNK(ptr->filestat.st_mode))
 			{
 				write(1, " -> ", 4);
@@ -275,8 +288,7 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 		{
 			len = ft_strlen(ptr->name);
 			write(1, ptr->name, len);
-			if (flags & UF_FLAG)
-				ft_put_UF(ptr);
+			ft_put_after(ptr, flags);
 			write(1, "\n", 1);
 		}
 		ptr = ptr->next;
