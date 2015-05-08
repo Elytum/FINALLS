@@ -198,8 +198,8 @@ void				ft_getlens(t_file *head, char lens[][7])
 		}
 		else
 		{
-			ptr->major = ft_strdup("0");
-			ptr->minor = ft_strdup("0");
+			ptr->major = NULL;
+			ptr->minor = NULL;
 		}
 		ptr = ptr->next;
 	}
@@ -286,7 +286,10 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 				if (lens[5] || lens[6])
 				{
 					p += lens[5] + lens[6] + 2;
-					ft_put_devices(ptr->major, ptr->minor, lens[6], p);
+					if (ptr->major && ptr->minor)
+						ft_put_devices(ptr->major, ptr->minor, lens[6], p);
+					else
+						ft_put_onwork_value(ptr->filestat.st_size, p);
 				}
 				else
 					ft_put_onwork_value(ptr->filestat.st_size, p);
@@ -400,7 +403,10 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 			if (lens[5] || lens[6])
 			{
 				p += lens[5] + lens[6] + 2;
-				ft_put_devices(ptr->major, ptr->minor, lens[6], p);
+				if (ptr->major && ptr->minor)
+					ft_put_devices(ptr->major, ptr->minor, lens[6], p);
+				else
+					ft_put_onwork_value(ptr->filestat.st_size, p);
 			}
 			else
 				ft_put_onwork_value(ptr->filestat.st_size, p);
