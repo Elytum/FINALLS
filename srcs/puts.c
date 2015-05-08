@@ -3,6 +3,8 @@
 #define S_ISISVTX 0001000
 #define S_ISUID   0004000
 #define S_ISGID   0002000
+#define XATTR_SIZE 10000
+#include <sys/xattr.h>
 
 void				ft_put_onwork_symbole(mode_t var, char *path)
 {
@@ -22,8 +24,13 @@ void				ft_put_onwork_symbole(mode_t var, char *path)
 		*path = '-';
 }
 
-void				ft_put_onwork_permissions(mode_t var, char *path)
+void				ft_put_onwork_permissions(mode_t var, char *path, char *p)
 {
+	// dprintf(1, "p = %s, %zi\n", p, listxattr(p, NULL, 0, XATTR_NOFOLLOW));
+	if (listxattr(p, NULL, 0, XATTR_NOFOLLOW) > 0)
+		*path-- = '@';
+	else
+		path--;
 	if (var & S_ISISVTX)
 	{
 		
@@ -217,7 +224,7 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 				ft_memset(tmp, ' ', lens[4]);
 				p = tmp;
 				p += 11;
-				ft_put_onwork_permissions(ptr->filestat.st_mode, p - 2);
+				ft_put_onwork_permissions(ptr->filestat.st_mode, p - 1, ptr->path);
 				p += lens[0];
 				ft_put_onwork_value(ptr->filestat.st_nlink, p);
 				p += 2;
@@ -322,7 +329,7 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 			ft_memset(tmp, ' ', lens[4]);
 			p = tmp;
 			p += 11;
-			ft_put_onwork_permissions(ptr->filestat.st_mode, p - 2);
+			ft_put_onwork_permissions(ptr->filestat.st_mode, p - 1, ptr->path);
 			p += lens[0];
 			ft_put_onwork_value(ptr->filestat.st_nlink, p);
 			p += 2;
