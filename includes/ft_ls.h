@@ -46,7 +46,7 @@ typedef struct		s_file
 	char			*path;
 	long long int	hard_links;
 	long long int	size;
-	int				date;
+	time_t			date;
 	char			*phard_links;
 	char			*psize;
 	char			*pdate;
@@ -64,8 +64,8 @@ typedef struct		s_info
 
 typedef struct		s_times
 {
-	unsigned int	launchtime;
-	unsigned int	timelimit;
+	time_t			launchtime;
+	time_t			timelimit;
 }					t_times;
 
 typedef int			(*compare)(t_file *f1, t_file *f2);
