@@ -1,5 +1,8 @@
 #include "../includes/ft_ls.h"
 #include <unistd.h>
+#define S_ISISVTX 0001000
+#define S_ISUID   0004000
+#define S_ISGID   0002000
 
 void				ft_put_onwork_symbole(mode_t var, char *path)
 {
@@ -21,15 +24,70 @@ void				ft_put_onwork_symbole(mode_t var, char *path)
 
 void				ft_put_onwork_permissions(mode_t var, char *path)
 {
- 	*path-- = ((var & S_IXOTH) ? 'x' : '-');
-	*path-- = ((var & S_IWOTH) ? 'w' : '-');
-	*path-- = ((var & S_IROTH) ? 'r' : '-');
-	*path-- = ((var & S_IXGRP) ? 'x' : '-');
-	*path-- = ((var & S_IWGRP) ? 'w' : '-');
-	*path-- = ((var & S_IRGRP) ? 'r' : '-');
-	*path-- = ((var & S_IXUSR) ? 'x' : '-');
-	*path-- = ((var & S_IWUSR) ? 'w' : '-');
-	*path-- = ((var & S_IRUSR) ? 'r' : '-');
+	if (var & S_ISISVTX)
+	{
+		
+		if (var & S_IWOTH || var & S_IROTH)
+		{
+			*path-- = 't';
+			*path-- = ((var & S_IWOTH) ? 'w' : '-');
+			*path-- = ((var & S_IROTH) ? 'r' : '-');
+		}
+		else
+		{
+			*path-- = 'T';
+			*path-- = '-';
+			*path-- = '-';
+		}
+	}
+	else
+	{
+		*path-- = ((var & S_IXOTH) ? 'x' : '-');
+		*path-- = ((var & S_IWOTH) ? 'w' : '-');
+		*path-- = ((var & S_IROTH) ? 'r' : '-');
+	}
+	if (var & S_ISGID)
+	{
+		if (var & S_IXGRP || var & S_IXGRP)
+		{
+			*path-- = 's';
+			*path-- = ((var & S_IWGRP) ? 'w' : '-');
+			*path-- = ((var & S_IRGRP) ? 'r' : '-');
+		}
+		else
+		{
+			*path-- = 'S';
+			*path-- = '-';
+			*path-- = '-';
+		}
+	}
+	else
+	{
+		*path-- = ((var & S_IXGRP) ? 'x' : '-');
+		*path-- = ((var & S_IWGRP) ? 'w' : '-');
+		*path-- = ((var & S_IRGRP) ? 'r' : '-');
+	}
+	if (var & S_ISUID)
+	{
+		if (var & S_IXUSR || var & S_IWUSR)
+		{
+			*path-- = 's';
+			*path-- = ((var & S_IWUSR) ? 'w' : '-');
+			*path-- = ((var & S_IRUSR) ? 'r' : '-');
+		}
+		else
+		{
+			*path-- = 'S';
+			*path-- = '-';
+			*path-- = '-';
+		}
+	}
+	else
+	{
+		*path-- = ((var & S_IXUSR) ? 'x' : '-');
+		*path-- = ((var & S_IWUSR) ? 'w' : '-');
+		*path-- = ((var & S_IRUSR) ? 'r' : '-');
+	}
 	ft_put_onwork_symbole(var, path);
 }
 
@@ -75,10 +133,10 @@ void				ft_put_onwork_group(char *group, char *path)
 	ft_strcpyo(path, group);
 }
 
-void				ft_put_onwork_time(BYPASS filestat, int date, t_times times, char *path)
+void				ft_put_onwork_time(BYPASS filestat, time_t date, t_times times, char *path)
 {
 	// dprintf (1, "date = %u, date > times.timelimit = %u, times.launchtime = %u\n", date, times.timelimit, times.launchtime);
-	if (date > times.timelimit)// && date < times.launchtime)
+	if (date > times.timelimit && date <= time(NULL))
 		ft_strncpyo(path, ctime(&(filestat).st_mtime) + 4, 12);
 	else
 	{
