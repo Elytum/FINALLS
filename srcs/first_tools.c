@@ -82,7 +82,7 @@ void				ft_puttotal(t_file *files)
 		total += ptr->filestat.st_blocks;
 		ptr = ptr->next;
 	}
-	write(1, "Total ", 6);
+	write(1, "total ", 6);
 	ft_putsize_t(total);
 	write(1, "\n", 1);
 }
@@ -101,7 +101,10 @@ void				ft_manage_directory(char *dir, compare f, int flags, t_times times)
 	len = ft_strlen(dir);
 	if (!(flags & SINGLE))
 	{
-		write(1, "\n", 1);
+		if (flags & FIRST)
+			flags &= ~FIRST;
+		else
+			write(1, "\n", 1);
 		write(1, dir, len);
 		write(1, ":\n", 2);
 	}
@@ -116,8 +119,7 @@ void				ft_manage_directory(char *dir, compare f, int flags, t_times times)
 	}
 	ft_strcpy(info.path, dir);
 	ptr = info.path + len;
-	if (*(ptr - 1) != '/')
-		*ptr++ = '/';
+	*ptr++ = '/';
 	*ptr = '\0';
 	files = NULL;
 	paths = NULL;

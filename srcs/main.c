@@ -74,12 +74,18 @@ void		ft_manage_first(char **args, int flags)
 	else
 		ptr = ft_simple_extractpaths(files);
 	ft_freefilestest(&files);
-	// if (!*(ptr + 1))
+
+	if (!*(ptr + 1))
 		flags |= SINGLE;
+	// else
+	// 	flags &= ~SINGLE;
+
 	// dprintf(1, "*ptr = '%s' and *(ptr + 1) = '%s'\n", *ptr, *(ptr + 1));
 	p = ptr;
 	if (*p)
 	{
+		flags |= FIRST;
+		// dprintf(1, "%s\n", *p);
 		// dprintf(1, "\tFlags single = %i\n", flags & SINGLE);
 		// if (p != ptr)
 			// write(1, "\n", 1);
@@ -87,7 +93,8 @@ void		ft_manage_first(char **args, int flags)
 		{
 			ft_manage_directory(*p, f, flags, times);
 			free(*p++);
-			flags &= ~SINGLE;
+			// flags &= ~SINGLE;
+			flags &= ~FIRST;
 		}
 	}
 	free(ptr);

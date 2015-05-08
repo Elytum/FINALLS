@@ -133,6 +133,8 @@ void				ft_putsize_t(size_t n);
 
 # define SINGLE  0b10000000000000000000000000000000
 # define ERROR   0b10000000000000000000000000000000
+# define FIRST  0b01000000000000000000000000000000
+
 # define ILLEGAL_OPTION "ls: illegal option -- "
 # define ILLEGAL_OPTION_SIZE 22
 # define USAGE1 "\nusage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1]"

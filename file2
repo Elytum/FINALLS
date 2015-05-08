@@ -1,0 +1,24 @@
+Total 360
+-rwxr-xr-x   1 achazal  2014_paris   1592 May  7 18:32 Makefile
+-rw-r--r--   1 achazal  2014_paris    448 May  7 18:32 README
+-rwxr-xr-x   1 achazal  2014_paris   9232 May  8 00:27 a.out
+-rw-r--r--   1 achazal  2014_paris      2 May  7 18:32 abc
+-rw-r--r--   1 achazal  2014_paris   9052 May  8 00:27 comparisons.o
+-rw-r--r--   1 achazal  2014_paris   1450 May  8 00:27 file1
+-rw-r--r--   1 achazal  2014_paris      0 May  8 00:27 file2
+-rw-r--r--   1 achazal  2014_paris  12480 May  8 00:27 first_tools.o
+-rw-r--r--   1 achazal  2014_paris   5420 May  8 00:27 flags.o
+-rw-r--r--   1 achazal  2014_paris   6992 May  8 00:27 free.o
+-rwxr-xr-x   1 achazal  2014_paris  34992 May  8 00:27 ft_ls
+drwxr-xr-x   3 achazal  2014_paris    102 May  7 18:32 includes
+-rw-r--r--   1 achazal  2014_paris   4800 May  8 00:27 libft.o
+-rw-r--r--   1 achazal  2014_paris   5368 May  8 00:27 libft2.o
+-rw-r--r--   1 achazal  2014_paris   5040 May  8 00:27 libft3.o
+-rw-r--r--   1 achazal  2014_paris   2624 May  8 00:27 libft4.o
+-rw-r--r--   1 achazal  2014_paris      0 May  7 18:32 ls
+-rw-r--r--   1 achazal  2014_paris   8904 May  8 00:27 main.o
+-rw-r--r--   1 achazal  2014_paris   9716 May  8 00:27 path.o
+-rw-r--r--   1 achazal  2014_paris  16360 May  8 00:27 puts.o
+drwxr-xr-x   9 achazal  2014_paris    306 May  7 18:32 sandbox
+drwxr-xr-x  13 achazal  2014_paris    442 May  8 00:24 srcs
+-rw-r--r--   1 achazal  2014_paris   1872 May  8 00:27 test.c

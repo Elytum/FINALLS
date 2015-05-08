@@ -43,8 +43,8 @@ void			ft_cleanpath(t_paths **paths)
 	{
 		if (stat(ptr->path, &statbuf) == -1 && lstat(ptr->path, &statbuf) == -1)
 		{
-			write(1, "ls: ", 4), write(1, ptr->path, ft_strlen(ptr->path));
-			write(1, ": No such file or directory\n", 28);
+			write(2, "ls: ", 4), write(2, ptr->path, ft_strlen(ptr->path));
+			write(2, ": No such file or directory\n", 28);
 			free(ptr->path), free(ptr);
 			if (!past)
 				*paths = (*paths)->next,

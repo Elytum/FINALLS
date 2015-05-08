@@ -38,7 +38,7 @@ void			ft_fillflag(char p, int *flags)
 		(*flags) |= LM_FLAG;
 	else if (p == 'p')
 		(*flags) |= LP_FLAG;
-	else
+	else if (p != '1')
 	{
 		write (1, ILLEGAL_OPTION, ILLEGAL_OPTION_SIZE);
 		write (1, &p, 1);
