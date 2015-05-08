@@ -75,10 +75,10 @@ void				ft_put_onwork_group(char *group, char *path)
 	ft_strcpyo(path, group);
 }
 
-void				ft_put_onwork_time(BYPASS filestat, time_t date, t_times times, char *path)
+void				ft_put_onwork_time(BYPASS filestat, int date, t_times times, char *path)
 {
-	// dprintf (1, "date = %ld, date > times.timelimit = %ld, times.launchtime = %ld\n", date, times.timelimit, time(NULL));
-	if (date > times.timelimit && date < time(NULL))//times.launchtime)
+	// dprintf (1, "date = %u, date > times.timelimit = %u, times.launchtime = %u\n", date, times.timelimit, times.launchtime);
+	if (date > times.timelimit)// && date < times.launchtime)
 		ft_strncpyo(path, ctime(&(filestat).st_mtime) + 4, 12);
 	else
 	{
