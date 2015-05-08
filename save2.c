@@ -4,9 +4,6 @@
 #define S_ISUID   0004000
 #define S_ISGID   0002000
 #define XATTR_SIZE 10000
-// #define	major(x)	((int32_t)(((u_int32_t)(x) >> 8) & 0xff))
-// #define	minor(x)	((int32_t)((x) & 0xff) | (((x) & 0xffff0000) >> 8))
-
 #include <sys/xattr.h>
 
 void				ft_put_onwork_symbole(mode_t var, char *path)
@@ -29,7 +26,6 @@ void				ft_put_onwork_symbole(mode_t var, char *path)
 
 void				ft_put_onwork_permissions(mode_t var, char *path, char *p)
 {
-	// dprintf(1, "p = %s, %zi\n", p, listxattr(p, NULL, 0, XATTR_NOFOLLOW));
 	if (listxattr(p, NULL, 0, XATTR_NOFOLLOW) > 0)
 		*path-- = '@';
 	else
@@ -156,7 +152,7 @@ void				ft_put_onwork_time(BYPASS filestat, time_t date, t_times times, char *pa
 	// write(1, " ", 1);
 }
 
-void				ft_getlens(t_file *head, char lens[][7])
+void				ft_getlens(t_file *head, char lens[][5])
 {
 	t_file			*ptr;
 	char			tmp;
@@ -165,9 +161,6 @@ void				ft_getlens(t_file *head, char lens[][7])
 	(*lens)[1] = 0;
 	(*lens)[2] = 0;
 	(*lens)[3] = 0;
-	(*lens)[4] = 0;
-	(*lens)[5] = 0;
-	(*lens)[6] = 0;
 	ptr = head;
 	while (ptr)
 	{
@@ -183,55 +176,13 @@ void				ft_getlens(t_file *head, char lens[][7])
 		if ((*lens)[2] < tmp)
 			(*lens)[2] = tmp;
 		tmp = ft_intlen(ptr->filestat.st_size);
+		// dprintf(1, "Size of %i = %i\n", (int)ptr->filestat.st_size, tmp);
 		if ((*lens)[3] < tmp)
 			(*lens)[3] = tmp;
-		if (S_ISCHR(ptr->filestat.st_mode) || S_ISBLK(ptr->filestat.st_mode))
-		{
-			ptr->major = ft_itoa(major(ptr->filestat.st_rdev));
-			ptr->minor = ft_itoa(minor(ptr->filestat.st_rdev));
-			tmp = ft_strlen(ptr->major);
-			if ((*lens)[5] < tmp)
-				(*lens)[5] = tmp;
-			tmp = ft_strlen(ptr->minor);
-			if ((*lens)[6] < tmp)
-				(*lens)[6] = tmp;
-		}
-		else
-		{
-			ptr->major = ft_strdup("0");
-			ptr->minor = ft_strdup("0");
-		}
 		ptr = ptr->next;
 	}
 }
 
-void		ft_put_devices(char *major, char *minor, int len, char *ptr)
-{
-	char	*p;
-
-	p = minor;
-	while (*p)
-		p++;
-	if (p != minor)
-		p--;
-	len -= (p - minor);
-	while (p >= minor)
-		*ptr-- = *p--;
-	while (len--)
-		ptr--;
-	*ptr-- = ',';
-	p = major;
-	while (*p)
-		p++;
-	if (p != major)
-		p--;
-	while (p >= major)
-		*ptr-- = *p--;
-	// *ptr = 'a';
-	// (void)major;
-	// (void)minor;
-	// (void)ptr;
-}
 
 void		ft_putfiles(t_file *head, int flags, t_times times)
 {
@@ -239,7 +190,7 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 	char	*buff;
 	char	*tmp;
 	char	*p;
-	char	lens[7];
+	char	lens[5];
 
 	if (!(buff = (char *)ft_memalloc(sizeof(char) * 256)))
 		return ;
@@ -250,16 +201,14 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 		{
 			ptr->pw = getpwuid(ptr->filestat.st_uid);
 			ptr->gr = getgrgid(ptr->filestat.st_gid);
-			if (flags & LN_FLAG || !ptr->pw || !(ptr->owner = ptr->pw->pw_name))
+			if (!ptr->pw || !(ptr->owner = ptr->pw->pw_name))
 				ptr->owner = ft_itoa(ptr->filestat.st_uid);
-			if (flags & LN_FLAG || !ptr->gr || !(ptr->group = ptr->gr->gr_name))
+			if (!ptr->gr || !(ptr->group = ptr->gr->gr_name))
 				ptr->group = ft_itoa(ptr->filestat.st_gid);
 			ptr = ptr->next;
 		}
 		ft_getlens(head, &lens);//1 + 1 + 2 + 2 + 1
 		lens[4] = 11 + lens[0] + lens[1] + lens[2] + lens[3] + 7 + 13;
-		if (lens[5] || lens[6])
-			lens[4] += lens[5] + lens[6] + 2;
 		if (!(tmp = (char *)malloc(sizeof(char) * (lens[4]))))
 			return ;
 		*(tmp + lens[4]) = '\0';
@@ -283,13 +232,7 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 				p += 2;
 				ft_put_onwork_group(ptr->group, p);
 				p += lens[2] + lens[3] + 1;
-				if (lens[5] || lens[6])
-				{
-					p += lens[5] + lens[6] + 2;
-					ft_put_devices(ptr->major, ptr->minor, lens[6], p);
-				}
-				else
-					ft_put_onwork_value(ptr->filestat.st_size, p);
+				ft_put_onwork_value(ptr->filestat.st_size, p);
 				p += 2;
 				ft_put_onwork_time(ptr->filestat, ptr->date, times, p);
 				write(1, tmp, lens[4]);
@@ -345,7 +288,7 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 	char	*buff;
 	char	*tmp;
 	char	*p;
-	char	lens[7];
+	char	lens[5];
 	int		len;
 
 	if (!(buff = (char *)ft_memalloc(sizeof(char) * 256)))
@@ -364,10 +307,7 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 			ptr = ptr->next;
 		}
 		ft_getlens(head, &lens);
-		// dprintf(1, "SIZE 2 : %i\n", lens[5]);
 		lens[4] = 11 + lens[0] + lens[1] + lens[2] + lens[3] + 7 + 13;
-		if (lens[5] || lens[6])
-			lens[4] += lens[5] + lens[6] + 2;
 		if (!(tmp = (char *)malloc(sizeof(char) * (lens[4] + 1))))
 			return ;
 		*(tmp + lens[4]) = '\0';
@@ -397,13 +337,7 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 			p += 2;
 			ft_put_onwork_group(ptr->group, p);
 			p += lens[2] + lens[3] + 1;
-			if (lens[5] || lens[6])
-			{
-				p += lens[5] + lens[6] + 2;
-				ft_put_devices(ptr->major, ptr->minor, lens[6], p);
-			}
-			else
-				ft_put_onwork_value(ptr->filestat.st_size, p);
+			ft_put_onwork_value(ptr->filestat.st_size, p);
 			p += 2;
 			ft_put_onwork_time(ptr->filestat, ptr->date, times, p);
 			write(1, tmp, lens[4]);
@@ -454,3 +388,15 @@ void		ft_put_permission_denied(char *path)
 	write(2, ptr, p - ptr);
 	write(2, ": Permission denied\n", 20);
 }
+
+/*
+	newf->name = path;
+	newf->path = path;
+	newf->owner = ft_get_owner(filestat);
+	newf->group = ft_get_group(filestat);
+	newf->date = filestat.st_mtime;
+	newf->size = filestat.st_size;
+	newf->permissions = ft_get_permissions(filestat);
+	newf->hard_links = filestat.st_nlink;
+	newf->next = NULL;
+*/
