@@ -26,7 +26,7 @@
 
 #include <time.h>
 
-char		ft_any_file(t_file *head)
+char		ft_any_file(t_file *head, int flags)
 {
 	t_file	*ptr;
 
@@ -34,7 +34,7 @@ char		ft_any_file(t_file *head)
 	while (ptr)
 	{
 		// dprintf(1, "Test %s\n", ptr->name);
-		if (S_ISLNK(ptr->filestat.st_mode) ||
+		if ((S_ISLNK(ptr->filestat.st_mode) && (flags & LL_FLAG || !opendir(ptr->path))) ||
 			S_ISREG(ptr->filestat.st_mode))
 			return (1);
 		ptr = ptr->next;
@@ -63,7 +63,7 @@ void		ft_manage_first(char **args, int flags)
 		ft_addpath(&paths, *ptr++);
 	ft_cleanpath(&paths);
 	/**/ft_split_order_type(paths, &files, f);
-	if (ft_any_file(files))
+	if (ft_any_file(files, flags))
 	{
 		flags &= ~FIRST;
 		ft_putfiles(files, flags, times);
