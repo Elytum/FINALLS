@@ -61,18 +61,18 @@ void				ft_put_onwork_value(int n, char *path)
 	}
 }
 
-void				ft_put_onwork_owner(struct passwd *pw, char *path)
+void				ft_put_onwork_owner(char *owner, char *path)
 {
-	if (!(pw))
+	if (!owner)
 		return ;
-	ft_strcpyo(path, pw->pw_name);
+	ft_strcpyo(path, owner);
 }
 
-void				ft_put_onwork_group(struct group *gr, char *path)
+void				ft_put_onwork_group(char *group, char *path)
 {
-	if (!(gr))
+	if (!group)
 		return ;
-	ft_strcpyo(path, gr->gr_name);
+	ft_strcpyo(path, group);
 }
 
 void				ft_put_onwork_time(BYPASS filestat, int date, t_times times, char *path)
@@ -137,8 +137,10 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 		{
 			ptr->pw = getpwuid(ptr->filestat.st_uid);
 			ptr->gr = getgrgid(ptr->filestat.st_gid);
-			ptr->owner = ptr->pw->pw_name;
-			ptr->group = ptr->gr->gr_name;
+			if (!ptr->pw || !(ptr->owner = ptr->pw->pw_name))
+				ptr->owner = "NULL";
+			if (!ptr->gr || !(ptr->group = ptr->gr->gr_name))
+				ptr->group = "NULL";
 			ptr = ptr->next;
 		}
 		ft_getlens(head, &lens);//1 + 1 + 2 + 2 + 1
@@ -150,7 +152,7 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 	ptr = head;
 	while (ptr)
 	{
-		if (S_ISREG(ptr->filestat.st_mode) || S_ISLNK(ptr->filestat.st_mode))
+		if (S_ISREG(ptr->filestat.st_mode))
 		{
 			if (flags & LL_FLAG && !(flags & UC_FLAG))
 			{
@@ -161,10 +163,10 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 				p += lens[0];
 				ft_put_onwork_value(ptr->filestat.st_nlink, p);
 				p += 2;
-				ft_put_onwork_owner(ptr->pw, p);
+				ft_put_onwork_owner(ptr->owner, p);
 				p += lens[1];
 				p += 2;
-				ft_put_onwork_group(ptr->gr, p);
+				ft_put_onwork_group(ptr->group, p);
 				p += lens[2] + lens[3] + 1;
 				ft_put_onwork_value(ptr->filestat.st_size, p);
 				p += 2;
@@ -176,7 +178,7 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 				{
 					write(1, " -> ", 4);
 					readlink(ptr->path, buff, 256);
-					write(1, buff, ft_strlen(buff));
+					write(1, buff, 256);
 					ft_strclr(buff);
 				}
 				write(1, "\n", 1);
@@ -234,8 +236,10 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 		{
 			ptr->pw = getpwuid(ptr->filestat.st_uid);
 			ptr->gr = getgrgid(ptr->filestat.st_gid);
-			ptr->owner = ptr->pw->pw_name;
-			ptr->group = ptr->gr->gr_name;
+			if (!ptr->pw || !(ptr->owner = ptr->pw->pw_name))
+				ptr->owner = "NULL";
+			if (!ptr->gr || !(ptr->group = ptr->gr->gr_name))
+				ptr->group = "NULL";
 			ptr = ptr->next;
 		}
 		ft_getlens(head, &lens);
@@ -264,10 +268,10 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 			p += lens[0];
 			ft_put_onwork_value(ptr->filestat.st_nlink, p);
 			p += 2;
-			ft_put_onwork_owner(ptr->pw, p);
+			ft_put_onwork_owner(ptr->owner, p);
 			p += lens[1];
 			p += 2;
-			ft_put_onwork_group(ptr->gr, p);
+			ft_put_onwork_group(ptr->group, p);
 			p += lens[2] + lens[3] + 1;
 			ft_put_onwork_value(ptr->filestat.st_size, p);
 			p += 2;
@@ -280,7 +284,7 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 			{
 				write(1, " -> ", 4);
 				readlink(ptr->path, buff, 256);
-				write(1, buff, ft_strlen(buff));
+				write(1, buff, 256);
 				ft_strclr(buff);
 			}
 			write(1, "\n", 1);
