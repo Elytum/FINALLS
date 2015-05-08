@@ -50,6 +50,8 @@ void		ft_manage_first(char **args, int flags)
 	compare	f;
 	t_times times;
 
+
+	flags |= FIRST;
 	times.launchtime = time(NULL);
 	times.timelimit = times.launchtime - 60 * 60 * 24 * 30 * 6;
 	f = ft_get_function(flags);
@@ -62,11 +64,13 @@ void		ft_manage_first(char **args, int flags)
 	/**/ft_split_order_type(paths, &files, f);
 	if (ft_any_file(files))
 	{
+		flags &= ~FIRST;
 		ft_putfiles(files, flags, times);
 		ptr = ft_simple_extractpaths(files);
 	}
 	else if (files && !files->next)
 	{
+		flags &= ~FIRST;
 		ptr = (char **)malloc(sizeof(char *) * 2);
 		*ptr = ft_strdup(files->name);
 		*(ptr + 1) = NULL;
@@ -84,7 +88,6 @@ void		ft_manage_first(char **args, int flags)
 	p = ptr;
 	if (*p)
 	{
-		flags |= FIRST;
 		// dprintf(1, "%s\n", *p);
 		// dprintf(1, "\tFlags single = %i\n", flags & SINGLE);
 		// if (p != ptr)
@@ -93,7 +96,7 @@ void		ft_manage_first(char **args, int flags)
 		{
 			ft_manage_directory(*p, f, flags, times);
 			free(*p++);
-			// flags &= ~SINGLE;
+			flags &= ~SINGLE;
 			flags &= ~FIRST;
 		}
 	}
