@@ -53,7 +53,7 @@ void		ft_manage_first(char **args, int flags)
 
 	flags |= FIRST;
 	times.launchtime = time(NULL);
-	times.timelimit = times.launchtime - 60 * 60 * 24 * 30 * 6;
+	times.timelimit = times.launchtime - 15638400;
 	f = ft_get_function(flags);
 	paths = NULL;
 	files = NULL;

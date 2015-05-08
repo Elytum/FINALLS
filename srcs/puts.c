@@ -77,13 +77,14 @@ void				ft_put_onwork_group(struct group *gr, char *path)
 
 void				ft_put_onwork_time(BYPASS filestat, int date, t_times times, char *path)
 {
-	// if (date > times.timelimit)
+	// dprintf (1, "date = %u, date > times.timelimit = %u, times.launchtime = %u\n", date, times.timelimit, times.launchtime);
+	if (date > times.timelimit)// && date < times.launchtime)
 		ft_strncpyo(path, ctime(&(filestat).st_mtime) + 4, 12);
-	// else
-	// {
-	// 	ft_strncpyo(path, ctime(&(filestat).st_mtime) + 4, 7);
-	// 	ft_strncpyo(path + 8, ctime(&(filestat).st_mtime) + 20, 4);
-	// }
+	else
+	{
+		ft_strncpyo(path, ctime(&(filestat).st_mtime) + 4, 7);
+		ft_strncpyo(path + 8, ctime(&(filestat).st_mtime) + 20, 4);
+	}
 	// write(1, " ", 1);
 }
 
@@ -191,7 +192,7 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 	if (flags & LL_FLAG && !(flags & UC_FLAG))
 		free(tmp);
 	free(buff);
-	times.timelimit++;
+	// times.timelimit++;
 }
 
 void		ft_put_after(t_file *file, int flags)
@@ -296,7 +297,7 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 	if (flags & LL_FLAG && !(flags & UC_FLAG))
 		free(tmp);
 	free(buff);
-	times.timelimit++;
+	// times.timelimit++;
 }
 
 void		ft_put_permission_denied(char *path)

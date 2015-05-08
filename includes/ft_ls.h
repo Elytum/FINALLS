@@ -64,8 +64,8 @@ typedef struct		s_info
 
 typedef struct		s_times
 {
-	int				launchtime;
-	int				timelimit;
+	unsigned int	launchtime;
+	unsigned int	timelimit;
 }					t_times;
 
 typedef int			(*compare)(t_file *f1, t_file *f2);
@@ -138,7 +138,7 @@ void				ft_putsize_t(size_t n);
 # define ILLEGAL_OPTION "ls: illegal option -- "
 # define ILLEGAL_OPTION_SIZE 22
 # define USAGE1 "\nusage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1]"
-# define USAGE2 "[file ...]\n"
+# define USAGE2 " [file ...]\n"
 # define USAGE USAGE1 USAGE2
 # define USAGE_SIZE 63
 # define LLERROR1 "ls: illegal option -- -\nusage: ls [-ABCFGHLOPRSTUWa"

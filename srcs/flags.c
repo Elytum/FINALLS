@@ -40,9 +40,9 @@ void			ft_fillflag(char p, int *flags)
 		(*flags) |= LP_FLAG;
 	else if (p != '1')
 	{
-		write (1, ILLEGAL_OPTION, ILLEGAL_OPTION_SIZE);
-		write (1, &p, 1);
-		write (1, USAGE, USAGE_SIZE);
+		write (2, ILLEGAL_OPTION, ILLEGAL_OPTION_SIZE);
+		write (2, &p, 1);
+		write (2, USAGE, USAGE_SIZE);
 		(*flags) |= ERROR;
 	}
 }
@@ -60,7 +60,7 @@ int			ft_getflags(char ***str)
 		if ((**(*str) == '-' && *(*(*str) + 1) == '-'))
 		{
 			if (*(*(*str)++ + 2))
-				write (1, LLERROR, LLERROR_SIZE), flags |= ERROR;
+				write (2, LLERROR, LLERROR_SIZE), flags |= ERROR;
 			return (flags);
 		}
 		p = *(*str)++ + 1;
