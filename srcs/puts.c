@@ -61,11 +61,11 @@ void				ft_put_onwork_value(int n, char *path)
 	}
 }
 
-void				ft_put_onwork_owner(char *owner, char *path)
+void				ft_put_onwork_owner(char *name, char *path)
 {
-	if (!owner)
+	if (!name)
 		return ;
-	ft_strcpyo(path, owner);
+	ft_strcpyo(path, name);
 }
 
 void				ft_put_onwork_group(char *group, char *path)
@@ -138,9 +138,9 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 			ptr->pw = getpwuid(ptr->filestat.st_uid);
 			ptr->gr = getgrgid(ptr->filestat.st_gid);
 			if (!ptr->pw || !(ptr->owner = ptr->pw->pw_name))
-				ptr->owner = "NULL";
+				ptr->owner = ft_itoa(ptr->filestat.st_uid);
 			if (!ptr->gr || !(ptr->group = ptr->gr->gr_name))
-				ptr->group = "NULL";
+				ptr->group = ft_itoa(ptr->filestat.st_gid);
 			ptr = ptr->next;
 		}
 		ft_getlens(head, &lens);//1 + 1 + 2 + 2 + 1
@@ -152,7 +152,7 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 	ptr = head;
 	while (ptr)
 	{
-		if (S_ISREG(ptr->filestat.st_mode))
+		if (S_ISREG(ptr->filestat.st_mode) || S_ISLNK(ptr->filestat.st_mode))
 		{
 			if (flags & LL_FLAG && !(flags & UC_FLAG))
 			{
@@ -178,7 +178,7 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 				{
 					write(1, " -> ", 4);
 					readlink(ptr->path, buff, 256);
-					write(1, buff, 256);
+					write(1, buff, ft_strlen(buff));
 					ft_strclr(buff);
 				}
 				write(1, "\n", 1);
@@ -237,9 +237,9 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 			ptr->pw = getpwuid(ptr->filestat.st_uid);
 			ptr->gr = getgrgid(ptr->filestat.st_gid);
 			if (!ptr->pw || !(ptr->owner = ptr->pw->pw_name))
-				ptr->owner = "NULL";
+				ptr->owner = ft_itoa(ptr->filestat.st_uid);
 			if (!ptr->gr || !(ptr->group = ptr->gr->gr_name))
-				ptr->group = "NULL";
+				ptr->group = ft_itoa(ptr->filestat.st_gid);
 			ptr = ptr->next;
 		}
 		ft_getlens(head, &lens);
@@ -284,7 +284,7 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 			{
 				write(1, " -> ", 4);
 				readlink(ptr->path, buff, 256);
-				write(1, buff, 256);
+				write(1, buff, ft_strlen(buff));
 				ft_strclr(buff);
 			}
 			write(1, "\n", 1);
