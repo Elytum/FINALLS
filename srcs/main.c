@@ -34,7 +34,8 @@ char		ft_any_file(t_file *head)
 	while (ptr)
 	{
 		// dprintf(1, "Test %s\n", ptr->name);
-		if (S_ISREG(ptr->filestat.st_mode))
+		if (S_ISLNK(ptr->filestat.st_mode) ||
+			S_ISREG(ptr->filestat.st_mode))
 			return (1);
 		ptr = ptr->next;
 	}

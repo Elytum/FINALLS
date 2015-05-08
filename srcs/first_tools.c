@@ -62,7 +62,8 @@ void				ft_split_order_type(t_paths *paths,
 	p = paths;
 	while (p)
 	{
-		stat(p->path, &statbuf);
+		if (lstat(p->path, &statbuf) == -1)
+			stat(p->path, &statbuf);
 		ft_add_new_file(files, p->path, statbuf, f);
 		p = p->next;
 	}

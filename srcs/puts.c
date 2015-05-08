@@ -150,7 +150,7 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 	ptr = head;
 	while (ptr)
 	{
-		if (S_ISREG(ptr->filestat.st_mode))
+		if (S_ISREG(ptr->filestat.st_mode) || S_ISLNK(ptr->filestat.st_mode))
 		{
 			if (flags & LL_FLAG && !(flags & UC_FLAG))
 			{
@@ -176,7 +176,7 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 				{
 					write(1, " -> ", 4);
 					readlink(ptr->path, buff, 256);
-					write(1, buff, 256);
+					write(1, buff, ft_strlen(buff));
 					ft_strclr(buff);
 				}
 				write(1, "\n", 1);
@@ -280,7 +280,7 @@ void		ft_putfilesdebug(t_file *head, int flags, t_times times)
 			{
 				write(1, " -> ", 4);
 				readlink(ptr->path, buff, 256);
-				write(1, buff, 256);
+				write(1, buff, ft_strlen(buff));
 				ft_strclr(buff);
 			}
 			write(1, "\n", 1);
