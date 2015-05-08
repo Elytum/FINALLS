@@ -14,31 +14,113 @@
 #include <unistd.h>
 #include <stdio.h>
 
+// void			ft_fillflag(char p, int *flags)
+// {
+// 	if (p == 'l')
+// 		(*flags) |= LL_FLAG;
+// 	else if (p == 'R')
+// 		(*flags) |= UR_FLAG;
+// 	else if (p == 'a')
+// 		(*flags) |= LA_FLAG;
+// 	else if (p == 'r')
+// 		(*flags) |= LR_FLAG;
+// 	else if (p == 't')
+// 		(*flags) |= LT_FLAG;
+// 	else if (p == 'S')
+// 		(*flags) |= US_FLAG;
+// 	else if (p == 'C')
+// 		(*flags) |= UC_FLAG;
+// 	else if (p == 'F')
+// 		(*flags) |= UF_FLAG;
+// 	else if (p == 'f')
+// 		(*flags) |= LF_FLAG;
+// 	else if (p == 'm')
+// 		(*flags) |= LM_FLAG;
+// 	else if (p == 'p')
+// 		(*flags) |= LP_FLAG;
+// 	else if (p != '1')
+// 	{
+// 		write (2, ILLEGAL_OPTION, ILLEGAL_OPTION_SIZE);
+// 		write (2, &p, 1);
+// 		write (2, USAGE, USAGE_SIZE);
+// 		(*flags) |= ERROR;
+// 	}
+// }
 void			ft_fillflag(char p, int *flags)
 {
-	if (p == 'l')
-		(*flags) |= LL_FLAG;
-	else if (p == 'R')
-		(*flags) |= UR_FLAG;
-	else if (p == 'a')
-		(*flags) |= LA_FLAG;
-	else if (p == 'r')
-		(*flags) |= LR_FLAG;
-	else if (p == 't')
-		(*flags) |= LT_FLAG;
-	else if (p == 'S')
-		(*flags) |= US_FLAG;
+	if (p == 'A')
+		(*flags) |= UNDEFIN;
+	else if (p == 'B')
+		(*flags) |= UNDEFIN;
 	else if (p == 'C')
 		(*flags) |= UC_FLAG;
 	else if (p == 'F')
 		(*flags) |= UF_FLAG;
+	else if (p == 'G')
+		(*flags) |= UNDEFIN;
+	else if (p == 'H')
+		(*flags) |= UNDEFIN;
+	else if (p == 'L')
+		(*flags) |= UNDEFIN;
+	else if (p == 'O')
+		(*flags) |= UNDEFIN;
+	else if (p == 'P')
+		(*flags) |= UNDEFIN;
+	else if (p == 'R')
+		(*flags) |= UR_FLAG;
+	else if (p == 'S')
+		(*flags) |= US_FLAG;
+	else if (p == 'T')
+		(*flags) |= UNDEFIN;
+	else if (p == 'U')
+		(*flags) |= UNDEFIN;
+	else if (p == 'a')
+		(*flags) |= LA_FLAG;
+	else if (p == 'b')
+		(*flags) |= UNDEFIN;
+	else if (p == 'c')
+		(*flags) |= UNDEFIN;
+	else if (p == 'd')
+		(*flags) |= UNDEFIN;
+	else if (p == 'e')
+		(*flags) |= UNDEFIN;
 	else if (p == 'f')
 		(*flags) |= LF_FLAG;
+	else if (p == 'g')
+		(*flags) |= UNDEFIN;
+	else if (p == 'h')
+		(*flags) |= UNDEFIN;
+	else if (p == 'i')
+		(*flags) |= UNDEFIN;
+	else if (p == 'k')
+		(*flags) |= UNDEFIN;
+	else if (p == 'l')
+		(*flags) |= LL_FLAG;
 	else if (p == 'm')
 		(*flags) |= LM_FLAG;
+	else if (p == 'n')
+		(*flags) |= UNDEFIN;
+	else if (p == 'o')
+		(*flags) |= UNDEFIN;
 	else if (p == 'p')
 		(*flags) |= LP_FLAG;
-	else if (p != '1')
+	else if (p == 'q')
+		(*flags) |= UNDEFIN;
+	else if (p == 'r')
+		(*flags) |= LR_FLAG;
+	else if (p == 's')
+		(*flags) |= UNDEFIN;
+	else if (p == 't')
+		(*flags) |= LT_FLAG;
+	else if (p == 'u')
+		(*flags) |= UNDEFIN;
+	else if (p == 'w')
+		(*flags) |= UNDEFIN;
+	else if (p == 'x')
+		(*flags) |= UNDEFIN;
+	else if (p == '1')
+		(*flags) |= UNDEFIN;
+	else
 	{
 		write (2, ILLEGAL_OPTION, ILLEGAL_OPTION_SIZE);
 		write (2, &p, 1);
