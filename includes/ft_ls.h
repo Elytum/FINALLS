@@ -50,6 +50,8 @@ typedef struct		s_file
 	char			*phard_links;
 	char			*psize;
 	char			*pdate;
+	char			*minor;
+	char			*major;
 	BYPASS			filestat;
 	struct passwd	*pw;
 	struct group	*gr;
@@ -127,6 +129,7 @@ void				ft_putsize_t(size_t n);
 # define LF_FLAG 0b00000000000000000000000100000000
 # define LM_FLAG 0b00000000000000000000001000000000
 # define LP_FLAG 0b00000000000000000000010000000000
+# define LN_FLAG 0b00000000000000000010000000000000
 
 # define LU_FLAG 0b00000000000000000000100000000000 // LAST ACCESS
 # define UU_FLAG 0b00000000000000000001000000000000 // CREATION DATE

@@ -99,7 +99,7 @@ void			ft_fillflag(char p, int *flags)
 	else if (p == 'm')
 		(*flags) |= LM_FLAG;
 	else if (p == 'n')
-		(*flags) |= UNDEFIN;
+		(*flags) |= LN_FLAG;
 	else if (p == 'o')
 		(*flags) |= UNDEFIN;
 	else if (p == 'p')
