@@ -52,6 +52,9 @@ void		ft_manage_first(char **args, int flags)
 	t_times times;
 
 
+	// flags |= FIRST;
+	// flags &= ~FIRST;
+	flags |= SINGLE;
 	flags |= FIRST;
 	times.launchtime = time(NULL);
 	times.timelimit = times.launchtime - 15638400;
@@ -61,32 +64,36 @@ void		ft_manage_first(char **args, int flags)
 	ptr = args;
 	while (*ptr)
 		ft_addpath(&paths, *ptr++);
-	ft_cleanpath(&paths);
+	ft_cleanpath(&paths, &flags);
 	/**/ft_split_order_type(paths, &files, f);
 	if (ft_any_file(files, flags))
 	{
 		flags &= ~FIRST;
 		ft_putfiles(files, flags, times);
-		ptr = ft_simple_extractpaths(files);
+		ptr = ft_simple_extractpaths(files, flags);
 	}
 	else if (files && !files->next)
 	{
-		flags &= ~FIRST;
+		// flags &= ~FIRST;
 		ptr = (char **)malloc(sizeof(char *) * 2);
 		*ptr = ft_strdup(files->name);
 		*(ptr + 1) = NULL;
 	}
 	else
-		ptr = ft_simple_extractpaths(files);
+		ptr = ft_simple_extractpaths(files, flags);
 	ft_freefilestest(&files);
-
-	if (!*(ptr + 1))
-		flags |= SINGLE;
+	if (*(ptr + 1))
+		flags &= ~SINGLE;
 	// else
 	// 	flags &= ~SINGLE;
 
 	// dprintf(1, "*ptr = '%s' and *(ptr + 1) = '%s'\n", *ptr, *(ptr + 1));
 	p = ptr;
+	if (flags & ERROR)
+	{
+		flags &= ~ERROR;
+		flags &= ~SINGLE;
+	}
 	if (*p)
 	{
 		// dprintf(1, "%s\n", *p);

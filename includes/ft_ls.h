@@ -81,7 +81,7 @@ int					ft_getflags(char ***str);
 void				ft_testflags(int flags);
 void				ft_addpath(t_paths **paths, char *p);
 void				ft_putpath(t_paths *paths);
-void				ft_cleanpath(t_paths **paths);
+void				ft_cleanpath(t_paths **paths, int *flags);
 char				*ft_itoa(int n);
 char				*ft_ltoa(long long int n);
 char				*ft_strrev(char *str);
@@ -114,7 +114,7 @@ void				*ft_memalloc(size_t size);
 int					ft_intlen(int n);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memset(void *b, int c, size_t len);
-char				**ft_simple_extractpaths(t_file *head);
+char				**ft_simple_extractpaths(t_file *head, int flags);
 void				ft_putsize_t(size_t n);
 
 # define LL_FLAG 0b00000000000000000000000000000001
@@ -135,10 +135,10 @@ void				ft_putsize_t(size_t n);
 # define UU_FLAG 0b00000000000000000001000000000000 // CREATION DATE
 
 # define SINGLE  0b10000000000000000000000000000000
-# define ERROR   0b10000000000000000000000000000000
-# define FIRST   0b01000000000000000000000000000000
-# define PAST    0b00100000000000000000000000000000
-# define UNDEFIN 0b00010000000000000000000000000000
+# define ERROR   0b01000000000000000000000000000000
+# define FIRST   0b00100000000000000000000000000000
+# define PAST    0b00010000000000000000000000000000
+# define UNDEFIN 0b00001000000000000000000000000000
 
 # define ILLEGAL_OPTION "ls: illegal option -- "
 # define ILLEGAL_OPTION_SIZE 22

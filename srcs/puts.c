@@ -9,6 +9,22 @@
 
 #include <sys/xattr.h>
 
+int				ft_isnotlinktodir(char *path, int mode)
+{
+	struct stat	statbuf;
+	char		*tmp;
+	int			i;
+
+	if (!S_ISLNK(mode))
+		return (0);
+	if (stat(path, &statbuf) == -1)
+		return (0);
+	if (S_ISDIR(statbuf.st_mode))
+		return (0);
+	return (1);
+}
+
+
 void				ft_put_onwork_symbole(mode_t var, char *path)
 {
 	if (S_ISLNK(var))
@@ -267,7 +283,7 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 	ptr = head;
 	while (ptr)
 	{
-		if (S_ISREG(ptr->filestat.st_mode) || S_ISLNK(ptr->filestat.st_mode))
+		if (S_ISREG(ptr->filestat.st_mode) || (S_ISLNK(ptr->filestat.st_mode) && (flags & LL_FLAG)) || ft_isnotlinktodir(ptr->path, ptr->filestat.st_mode))
 		{
 			if (flags & LL_FLAG && !(flags & UC_FLAG))
 			{

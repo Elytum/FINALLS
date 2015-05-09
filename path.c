@@ -149,7 +149,7 @@ char			**ft_simple_extractpaths(t_file *head, int flags)
 	ptr = head;
 	while (ptr)
 	{
-		if (S_ISDIR(ptr->filestat.st_mode) || (!(flags & LL_FLAG) && ft_linktodirpath(ptr->path, ptr->filestat.st_mode)))
+		if (S_ISDIR(ptr->filestat.st_mode))// || (!(flags & LL_FLAG) && ft_linktodirpath(ptr->path, ptr->filestat.st_mode)))
 			len++;
 		ptr = ptr->next;
 	}
@@ -161,8 +161,8 @@ char			**ft_simple_extractpaths(t_file *head, int flags)
 	{
 		if (S_ISDIR(ptr->filestat.st_mode))
 			*p++ = ft_strdup(ptr->path);
-		else if (!(flags & LL_FLAG) && (tmp = ft_linktodirpath(ptr->path, ptr->filestat.st_mode)))
-			*p++ = tmp;
+		// else if ((tmp = ft_linktodirpath(ptr->path, ptr->filestat.st_mode)))
+		// 	*p++ = tmp;
 		ptr = ptr->next;
 	}
 	*p = NULL;
