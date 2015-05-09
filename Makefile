@@ -12,7 +12,7 @@
 #-Wall -Wextra -Werror 
 # -------------Compilateur------------------#
 CC = cc
-CFLAGS = -I./includes -g
+CFLAGS = -I./includes -g -O3 -Werror
 #--------------Name-------------------------#
 NAME = ft_ls
 
