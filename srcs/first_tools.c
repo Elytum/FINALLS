@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   first_tools.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/11/15 04:49:41 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/25 22:54:45 by achazal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/ft_ls.h"
 #include <unistd.h>
 
-DIR					*ft_directory_intro(char *dir, int *flags, char **ptr, t_info *info)
+DIR					*ft_directory_intro(char *dir, int *flags,
+											char **ptr, t_info *info)
 {
 	DIR				*dirp;
 	int				len;
@@ -30,8 +43,8 @@ DIR					*ft_directory_intro(char *dir, int *flags, char **ptr, t_info *info)
 	return (dirp);
 }
 
- t_file				*ft_directory_loop(char **dir, int *flags, compare f)
- {
+t_file				*ft_directory_loop(char **dir, int *flags, compare f)
+{
 	DIR				*dirp;
 	struct dirent	*direntp;
 	t_info			info;
@@ -59,23 +72,15 @@ DIR					*ft_directory_intro(char *dir, int *flags, char **ptr, t_info *info)
 	return (files);
 }
 
-
-void				ft_manage_directory(char *dir, compare f, int flags, t_times times)
+void				ft_manage_directory(char *dir, compare f,
+											int flags, t_times times)
 {
-		DIR				*dirp;
-		struct dirent	*direntp;
 	char			**paths;
-	char			*ptr;
 	char			**pptr;
 	t_file			*files;
-		t_info			info;
-
-	paths = NULL;
-
 
 	if (!(files = ft_directory_loop(&dir, &flags, f)))
 		return ;
-
 	ft_putfilesdebug(files, flags, times);
 	paths = ft_extractpaths(files);
 	ft_freefiles2(&files, flags);

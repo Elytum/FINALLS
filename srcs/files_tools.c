@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   files_tools.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/11/15 04:49:41 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/25 22:54:45 by achazal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/ft_ls.h"
 
-void		ft_insert_new_file(t_file **first, t_file *newf, compare f)
+void			ft_insert_new_file(t_file **first, t_file *newf, compare f)
 {
 	t_file		*ptr;
 
@@ -28,15 +40,16 @@ static void		ft_add_new_file(t_file **first, char *path,
 
 	if (!(newf = (t_file *)malloc(sizeof(t_file))))
 		return ;
-/**/newf->name = path;
-/**/newf->path = path;
+	newf->name = path;
+	newf->path = path;
 	newf->filestat = filestat;
 	newf->date = filestat.st_mtime;
 	newf->next = NULL;
 	ft_insert_new_file(first, newf, f);
 }
 
-void			ft_add_new_file2(t_file **first, t_info info, compare f, int flags)
+void			ft_add_new_file2(t_file **first, t_info info,
+									compare f, int flags)
 {
 	t_file		*newf;
 	BYPASS		filestat;
@@ -52,8 +65,8 @@ void			ft_add_new_file2(t_file **first, t_info info, compare f, int flags)
 	ft_insert_new_file(first, newf, f);
 }
 
-void				ft_split_order_type(t_paths *paths,
-					t_file **files, compare f)
+void			ft_split_order_type(t_paths *paths,
+									t_file **files, compare f)
 {
 	t_paths		*p;
 	struct stat	statbuf;
@@ -68,10 +81,10 @@ void				ft_split_order_type(t_paths *paths,
 	}
 }
 
-void				ft_puttotal(t_file *files)
+void			ft_puttotal(t_file *files)
 {
-	t_file			*ptr;
-	size_t			total;
+	t_file		*ptr;
+	size_t		total;
 
 	total = 0;
 	ptr = files;

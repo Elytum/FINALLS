@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   comparisons2.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/11/15 04:49:41 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/25 22:54:45 by achazal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/ft_ls.h"
 
 int				ft_cmpdate(t_file *s1, t_file *s2)
@@ -40,11 +52,4 @@ int				ft_cmprsize(t_file *s1, t_file *s2)
 	if (!(ret = s1->filestat.st_size - s2->filestat.st_size))
 		ret = ft_strcmp(s2->name, s1->name);
 	return (ret);
-}
-
-int				ft_anyway(t_file *s1, t_file *s2)
-{
-	return (1);
-	(void)s1;
-	(void)s2;
 }

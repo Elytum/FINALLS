@@ -6,67 +6,67 @@
 /*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/15 04:49:41 by achazal           #+#    #+#             */
-/*   Updated: 2014/11/25 22:54:45 by achazal          ###   ########.fr       */
+/*   Updated: 2015/05/10 12:09:37 by achazal          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "../includes/ft_ls.h"
 
-char        *ft_itoa(int n)
+char		*ft_itoa(int n)
 {
-    char    *str;
-    char    *new;
-    int     pos;
-    int     tmp;
+	char	*str;
+	char	*newp;
+	int		pos;
+	int		tmp;
 
-    pos = 0;
-    tmp = n;
-    if (n == -2147483648 || n == 0)
-        return ((n == 0) ? ft_strdup("0") : ft_strdup("-2147483648"));
-    if (!(str = (char *)malloc(sizeof(char) * 12)))
-        return (NULL);
-    if (n < 0)
-        n *= -1;
-    while (n > 0)
-    {
-        str[pos++] = (n % 10) + 48;
-        n = n / 10;
-    }
-    str[pos] = '\0';
-    (tmp < 0) ? (str[pos++] = '-') : 0;
-    str[pos] = '\0';
-    new = ft_strrev(str);
-    free(str);
-    return (new);
+	pos = 0;
+	tmp = n;
+	if (n == -2147483648 || n == 0)
+		return ((n == 0) ? ft_strdup("0") : ft_strdup("-2147483648"));
+	if (!(str = (char *)malloc(sizeof(char) * 12)))
+		return (NULL);
+	if (n < 0)
+		n *= -1;
+	while (n > 0)
+	{
+		str[pos++] = (n % 10) + 48;
+		n = n / 10;
+	}
+	str[pos] = '\0';
+	(tmp < 0) ? (str[pos++] = '-') : 0;
+	str[pos] = '\0';
+	newp = ft_strrev(str);
+	free(str);
+	return (newp);
 }
 
-char        *ft_ltoa(long long int n)
+char		*ft_ltoa(long long int n)
 {
-    char    *str;
-    char    *new;
-    int     pos;
-    int     tmp;
+	char	*str;
+	char	*newp;
+	int		pos;
+	int		tmp;
 
-    pos = 0;
-    tmp = n;
-    if (n == -9223372036854775807 || n == 0)
-        return ((n == 0) ? ft_strdup("0") : ft_strdup("-9223372036854775807"));
-    if (!(str = (char *)malloc(sizeof(char) * 12)))
-        return (NULL);
-    if (n < 0)
-        n *= -1;
-    while (n > 0)
-    {
-        str[pos++] = (n % 10) + 48;
-        n = n / 10;
-    }
-    str[pos] = '\0';
-    (tmp < 0) ? (str[pos++] = '-') : 0;
-    str[pos] = '\0';
-    new = ft_strrev(str);
-    free(str);
-    return (new);
+	pos = 0;
+	tmp = n;
+	if (n == -9223372036854775807 || n == 0)
+		return ((n == 0) ? ft_strdup("0") : ft_strdup("-9223372036854775807"));
+	if (!(str = (char *)malloc(sizeof(char) * 12)))
+		return (NULL);
+	if (n < 0)
+		n *= -1;
+	while (n > 0)
+	{
+		str[pos++] = (n % 10) + 48;
+		n = n / 10;
+	}
+	str[pos] = '\0';
+	(tmp < 0) ? (str[pos++] = '-') : 0;
+	str[pos] = '\0';
+	newp = ft_strrev(str);
+	free(str);
+	return (newp);
 }
 
 char		*ft_strrev(char *str)
@@ -101,11 +101,11 @@ char		*ft_strcpy(char *dst, const char *src)
 	return (dst);
 }
 
-void        ft_strclr(const char *s)
+void		ft_strclr(const char *s)
 {
-    char    *ptr;
+	char	*ptr;
 
-    ptr = (char *)s;
-    while (*ptr)
-        *ptr++ = '\0';
+	ptr = (char *)s;
+	while (*ptr)
+		*ptr++ = '\0';
 }

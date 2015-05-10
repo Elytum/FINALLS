@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libft3.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/11/15 04:49:41 by achazal           #+#    #+#             */
+/*   Updated: 2015/05/10 12:09:37 by achazal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -43,16 +55,6 @@ int					ft_intlen(int n)
 	return (len);
 }
 
-void		ft_bzero(void *s, size_t n)
-{
-	unsigned char	*way;
-	if (!n)
-		return ;
-	way = (unsigned char *)s;
-	while (n--)
-		*way++ = 0;
-}
-
 void				*ft_memset(void *b, int c, size_t len)
 {
 	unsigned char	*way;
@@ -63,10 +65,10 @@ void				*ft_memset(void *b, int c, size_t len)
 	return (b);
 }
 
-char		*ft_strcpyo(char *dst, const char *src)
+char				*ft_strcpyo(char *dst, const char *src)
 {
-	char	*ptr;
-	char	*p;
+	char			*ptr;
+	char			*p;
 
 	p = dst;
 	ptr = (char *)src;
@@ -75,10 +77,10 @@ char		*ft_strcpyo(char *dst, const char *src)
 	return (dst);
 }
 
-char		*ft_strncpyo(char *dst, const char *src, size_t n)
+char				*ft_strncpyo(char *dst, const char *src, size_t n)
 {
-	char	*ptr;
-	char	*p;
+	char			*ptr;
+	char			*p;
 
 	p = dst;
 	ptr = (char *)src;

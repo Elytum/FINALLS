@@ -39,7 +39,6 @@ int					ft_atoi(const char *str)
 	return (value * sign);
 }
 
-
 size_t				ft_strlen(char *str)
 {
 	char			*ptr;
