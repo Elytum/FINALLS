@@ -66,22 +66,23 @@ void			ft_cleanpath(t_paths **paths, int *flags)
 	t_paths		*past;
 	struct stat	statbuf;
 	char		*p;
+	char		error;
 
 	ptr = *paths;
 	past = NULL;
 	while (ptr)
 	{
-		*flags &= ~ERROR;
+		error = 0;//*flags &= ~ERROR;
 		if ((p = ft_strrchr(ptr->path, '/')))
 			;
 		else
 			p = ptr->path;
 		if (ft_strlen(p) > 256)
-			*flags |= ERROR;
-		if (*flags & ERROR || (stat(ptr->path, &statbuf) == -1 && lstat(ptr->path, &statbuf) == -1))
+			error = 1;//*flags |= ERROR;
+		if (error || (stat(ptr->path, &statbuf) == -1 && lstat(ptr->path, &statbuf) == -1))
 		{
 			write(2, "ls: ", 4), write(2, ptr->path, ft_strlen(ptr->path));
-			if (*flags & ERROR)
+			if (error)
 				write(2, ": File name too long\n", 21);
 			else
 				write(2, ": No such file or directory\n", 28);
@@ -92,7 +93,7 @@ void			ft_cleanpath(t_paths **paths, int *flags)
 			else
 				past->next = past->next->next,
 				ptr = past->next;
-			*flags |= ERROR;
+			*flags |= REMOVED;// *flags |= ERROR;// error = 1;
 		}
 		else
 			past = ptr,

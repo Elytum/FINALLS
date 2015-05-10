@@ -30,7 +30,7 @@ char		ft_any_file(t_file *head, int flags)
 {
 	t_file	*ptr;
 	DIR		*dir;
-	
+
 	struct stat	statbuf;
 
 	ptr = head;
@@ -99,10 +99,11 @@ void		ft_manage_first(char **args, int flags)
 
 	// dprintf(1, "*ptr = '%s' and *(ptr + 1) = '%s'\n", *ptr, *(ptr + 1));
 	p = ptr;
-	if (flags & ERROR)
+	if (flags & REMOVED)
 	{
-		flags &= ~ERROR;
+		flags &= ~REMOVED;
 		flags &= ~SINGLE;
+		// dprintf(1, "TEST\n");
 	}
 	if (*p)
 	{
