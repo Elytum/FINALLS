@@ -25,8 +25,10 @@ FILES =	main.c	\
 		flags.c	\
 		path.c	\
 		comparisons.c	\
+		comparisons2.c	\
 		puts.c	\
 		first_tools.c	\
+		files_tools.c	\
 		free.c
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))

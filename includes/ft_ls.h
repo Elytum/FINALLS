@@ -117,6 +117,15 @@ void				*ft_memset(void *b, int c, size_t len);
 char				**ft_simple_extractpaths(t_file *head, int flags);
 void				ft_putsize_t(size_t n);
 
+#include "../includes/ft_ls.h"
+
+int				ft_cmpdate(t_file *s1, t_file *s2);
+int				ft_cmprdate(t_file *s1, t_file *s2);
+int				ft_cmpsize(t_file *s1, t_file *s2);
+int				ft_cmprsize(t_file *s1, t_file *s2);
+
+void			ft_puttotal(t_file *files);
+
 # define LL_FLAG 0b00000000000000000000000000000001
 # define UR_FLAG 0b00000000000000000000000000000010
 # define LA_FLAG 0b00000000000000000000000000000100

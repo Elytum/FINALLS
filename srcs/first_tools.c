@@ -1,91 +1,31 @@
 #include "../includes/ft_ls.h"
 #include <unistd.h>
 
-static void		ft_insert_new_file(t_file **first, t_file *newf, compare f)
+DIR					*ft_directory_intro(char *dir, int *flags, int *len, t_info *info)
 {
-	t_file		*ptr;
+	DIR				*dirp;
 
-	if (!*first)
-		*first = newf;
-	else if (f(newf, *first) < 0)
+	*len = ft_strlen(dir);
+	if (*flags & FIRST)
+		*flags &= ~FIRST;
+	else
+		write(1, "\n", 1);
+	
+	if (!(*flags & SINGLE))
 	{
-		newf->next = *first;
-		*first = newf;
+		write(1, dir, *len);
+		write(1, ":\n", 2);
 	}
 	else
+		*flags &= ~SINGLE;
+	if (!(info->path = (char *)malloc(sizeof(char) * (256 + *len))))
+		return (NULL);
+	if (!(dirp = opendir(dir)))
 	{
-		ptr = *first;
-		while (ptr->next && f(newf, ptr->next) > 0)
-			ptr = ptr->next;
-		newf->next = ptr->next;
-		ptr->next = newf;
+		ft_put_permission_denied(dir);
+		return (NULL);
 	}
-}
-
-static void		ft_add_new_file(t_file **first, char *path,
-					BYPASS filestat, compare f)
-{
-	t_file		*newf;
-
-	if (!(newf = (t_file *)malloc(sizeof(t_file))))
-		return ;
-/**/newf->name = path;
-/**/newf->path = path;
-	newf->filestat = filestat;
-	newf->date = filestat.st_mtime;
-	newf->next = NULL;
-	ft_insert_new_file(first, newf, f);
-}
-
-void			ft_add_new_file2(t_file **first, t_info info, compare f, int flags)
-{
-	t_file		*newf;
-	BYPASS		filestat;
-
-	if ((lstat(info.path, &filestat) == -1) ||
-		!(newf = (t_file *)malloc(sizeof(t_file))))
-		return ;
-	newf->name = ft_strdup(info.name);
-	newf->path = ft_strdup(info.path);
-	newf->filestat = filestat;
-	newf->date = filestat.st_mtime;
-	newf->next = NULL;
-	ft_insert_new_file(first, newf, f);
-}
-
-void				ft_split_order_type(t_paths *paths,
-					t_file **files, compare f)
-{
-	t_paths		*p;
-	struct stat	statbuf;
-
-	p = paths;
-	while (p)
-	{
-		if (lstat(p->path, &statbuf) == -1)
-			stat(p->path, &statbuf);
-		ft_add_new_file(files, p->path, statbuf, f);
-		p = p->next;
-	}
-}
-
-void				ft_puttotal(t_file *files)
-{
-	t_file			*ptr;
-	size_t			total;
-
-	total = 0;
-	ptr = files;
-	if (!files)
-		return ;
-	while (ptr)
-	{
-		total += ptr->filestat.st_blocks;
-		ptr = ptr->next;
-	}
-	write(1, "total ", 6);
-	ft_putsize_t(total);
-	write(1, "\n", 1);
+	return (dirp);
 }
 
 void				ft_manage_directory(char *dir, compare f, int flags, t_times times)
@@ -99,39 +39,10 @@ void				ft_manage_directory(char *dir, compare f, int flags, t_times times)
 	t_info			info;
 	int				len;
 
-	len = ft_strlen(dir);
-
-	// if (!(flags & SINGLE))
-	// {
-	// 	if (flags & FIRST)
-	// 		flags &= ~FIRST;
-	// 	else
-	// 		write(1, "\n", 1);
-	// 	write(1, dir, len);
-	// 	write(1, ":\n", 2);
-	// }
-	// else
-	// 	flags &= ~SINGLE;
-	if (flags & FIRST)
-		flags &= ~FIRST;
-	else
-		write(1, "\n", 1);
+	if (!(dirp = ft_directory_intro(dir, &flags, &len, &info)))
+		return ;
 	
-	if (!(flags & SINGLE))
-	{
-		write(1, dir, len);
-		write(1, ":\n", 2);
-	}
-	else
-		flags &= ~SINGLE;
-
-	if (!(info.path = (char *)malloc(sizeof(char) * (256 + len))))
-		return ;
-	if (!(dirp = opendir(dir)))
-	{
-		ft_put_permission_denied(dir);
-		return ;
-	}
+	
 	ft_strcpy(info.path, dir);
 	ptr = info.path + len;
 	*ptr++ = '/';
