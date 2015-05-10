@@ -15,12 +15,17 @@ int				ft_isnotlinktodir(char *path, int mode)
 	char		*tmp;
 	int			i;
 
+	DIR		*dir;
+
 	if (!S_ISLNK(mode))
 		return (0);
-	if (stat(path, &statbuf) == -1)
+	if ((dir = opendir(path)))
+	{
+		closedir(dir);
 		return (0);
-	if (S_ISDIR(statbuf.st_mode))
-		return (0);
+	}
+	// else if (stat(path, &statbuf) == -1)
+	// 	return (0);
 	return (1);
 }
 

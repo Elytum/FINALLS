@@ -29,13 +29,23 @@
 char		ft_any_file(t_file *head, int flags)
 {
 	t_file	*ptr;
+	DIR		*dir;
+	
+	struct stat	statbuf;
 
 	ptr = head;
 	while (ptr)
 	{
-		// dprintf(1, "Test %s\n", ptr->name);
-		if ((S_ISLNK(ptr->filestat.st_mode) && (flags & LL_FLAG || !opendir(ptr->path))) ||
-			S_ISREG(ptr->filestat.st_mode))
+		if (S_ISLNK(ptr->filestat.st_mode))
+		{
+			if (flags & LL_FLAG)
+				return (1);
+			if (!(dir = opendir(ptr->path)))
+				return (1);
+			else
+				closedir(dir);
+		}
+		if (S_ISREG(ptr->filestat.st_mode))
 			return (1);
 		ptr = ptr->next;
 	}
