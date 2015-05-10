@@ -123,6 +123,8 @@ int				ft_cmpdate(t_file *s1, t_file *s2);
 int				ft_cmprdate(t_file *s1, t_file *s2);
 int				ft_cmpsize(t_file *s1, t_file *s2);
 int				ft_cmprsize(t_file *s1, t_file *s2);
+int				ft_anyway(t_file *s1, t_file *s2);
+compare			ft_get_singfunction(compare newp);
 
 void			ft_puttotal(t_file *files);
 

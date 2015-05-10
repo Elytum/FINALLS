@@ -41,3 +41,10 @@ int				ft_cmprsize(t_file *s1, t_file *s2)
 		ret = ft_strcmp(s2->name, s1->name);
 	return (ret);
 }
+
+int				ft_anyway(t_file *s1, t_file *s2)
+{
+	return (1);
+	(void)s1;
+	(void)s2;
+}
