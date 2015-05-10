@@ -122,6 +122,22 @@ int			main(int ac, char **av)
 	int	flags;
 	int		f;
 
+	char **ptr = av + 2;
+	while (*ptr)
+	{
+		// dprintf(1, "Argument %li : '%s'\n", ptr - av - 2, *ptr);
+		if (!**ptr)
+		{
+			write (1, "ls: fts_open: No such file or directory\n", 40);
+			return (0);
+		}
+		ptr++;
+	}
+/*	if (!av[ac - 1])
+	{
+		write (1, "ls: fts_open: No such file or directory\n", 40);
+		return (0);
+	}*/
 	flags = 0;
 	f = 0;
 	av++;
