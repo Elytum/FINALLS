@@ -79,7 +79,6 @@ int					ft_strcmp(const char *s1, const char *s2);
 void				ft_fillflag(char p, int *flags);
 int					ft_getflags(char ***str);
 void				ft_testflags(int flags);
-void				ft_addpath(t_paths **paths, char *p);
 void				ft_putpath(t_paths *paths);
 void				ft_cleanpath(t_paths **paths, int *flags);
 char				*ft_itoa(int n);
@@ -105,7 +104,6 @@ void				ft_add_new_file2(t_file **first, t_info info, compare f, int flags);
 void				ft_split_order_type(t_paths *paths, t_file **files,
 									compare f);
 void				ft_manage_directory(char *dir, compare f, int flags, t_times times);
-char				**ft_extractpaths(t_file *head);
 void				ft_freefiles(t_file **head);
 void				ft_freefiles2(t_file **head, int flags);
 void				ft_freefilestest(t_file **head);
@@ -114,6 +112,7 @@ void				*ft_memalloc(size_t size);
 int					ft_intlen(int n);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memset(void *b, int c, size_t len);
+char				*ft_strrchr(const char *s, int c);
 char				**ft_simple_extractpaths(t_file *head, int flags);
 void				ft_putsize_t(size_t n);
 

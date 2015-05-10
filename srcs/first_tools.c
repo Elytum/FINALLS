@@ -13,6 +13,46 @@
 #include "../includes/ft_ls.h"
 #include <unistd.h>
 
+static size_t		ft_nbofpaths(t_file *head)
+{
+	t_file			*ptr;
+	size_t			len;
+
+	len = 0;
+	ptr = head;
+	while (ptr)
+	{
+		if (S_ISDIR(ptr->filestat.st_mode) &&
+			!((ptr->name[0] == '.' && !(ptr->name[1])) ||
+			(ptr->name[0] == '.' && ptr->name[1] == '.' && !ptr->name[2])))
+			len++;
+		ptr = ptr->next;
+	}
+	return (len);
+}
+
+static char			**ft_extractpaths(t_file *head)
+{
+	t_file			*ptr;
+	char			**paths;
+	char			**p;
+
+	if (!(paths = (char **)malloc(sizeof(char *) * (ft_nbofpaths(head) + 1))))
+		return (NULL);
+	p = paths;
+	ptr = head;
+	while (ptr)
+	{
+		if (S_ISDIR(ptr->filestat.st_mode) &&
+			!((ptr->name[0] == '.' && !(ptr->name[1])) ||
+			(ptr->name[0] == '.' && ptr->name[1] == '.' && !ptr->name[2])))
+			*p++ = ft_strdup(ptr->path);
+		ptr = ptr->next;
+	}
+	*p = NULL;
+	return (paths);
+}
+
 DIR					*ft_directory_intro(char *dir, int *flags,
 											char **ptr, t_info *info)
 {

@@ -36,6 +36,32 @@ static char		ft_any_file(t_file *head, int flags)
 	return (0);
 }
 
+static void		ft_addpath(t_paths **paths, char *p)
+{
+	t_paths		*ptr;
+	t_paths		*newp;
+
+	if (!(newp = (t_paths *)malloc(sizeof(t_paths))))
+		return ;
+	newp->path = ft_strdup(p);
+	newp->next = NULL;
+	if (!*paths)
+		*paths = newp;
+	else if (ft_strcmp(p, (*paths)->path) < 0)
+	{
+		newp->next = *paths;
+		*paths = newp;
+	}
+	else
+	{
+		ptr = *paths;
+		while (ptr->next && ft_strcmp(p, ptr->next->path) > 0)
+			ptr = ptr->next;
+		newp->next = ptr->next;
+		ptr->next = newp;
+	}
+}
+
 static t_file	*ft_init_first(int *flags, char **args,
 									compare f, t_times times)
 {
@@ -91,7 +117,8 @@ void			ft_manage_first(char **args, compare f,
 	}
 	else if (files && !files->next)
 	{
-		ptr = (char **)malloc(sizeof(char *) * 2);
+		if (!(ptr = (char **)malloc(sizeof(char *) * 2)))
+			return ;
 		*ptr = ft_strdup(files->name);
 		*(ptr + 1) = NULL;
 	}

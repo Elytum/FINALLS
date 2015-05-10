@@ -29,3 +29,21 @@ void		ft_putsize_t(size_t n)
 		write(1, &c, 1);
 	}
 }
+
+char	*ft_strrchr(const char *s, int c)
+{
+	char	letter;
+	int		i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	letter = (char)c;
+	while (i && s[i] != letter)
+	{
+		i--;
+	}
+	if (s[i] == letter)
+		return ((char *)s + i);
+	return (0);
+}

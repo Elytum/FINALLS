@@ -248,10 +248,6 @@ void		ft_put_devices(char *major, char *minor, int len, char *ptr)
 		p--;
 	while (p >= major)
 		*ptr-- = *p--;
-	// *ptr = 'a';
-	// (void)major;
-	// (void)minor;
-	// (void)ptr;
 }
 
 void		ft_putfiles(t_file *head, int flags, t_times times)
