@@ -24,8 +24,6 @@ void		ft_freefiles(t_file **head)
 		free(ptr->owner);
 		free(ptr->group);
 		free(ptr->name);
-		// free(ptr->path);
-		// ptr->path = NULL;
 		free(ptr->phard_links);
 		free(ptr->psize);
 		free(ptr->pdate);
@@ -43,25 +41,6 @@ void		ft_freefilestest(t_file **head)
 	ptr = *head;
 	while (ptr)
 	{
-		// free(ptr->permissions);
-		// free(ptr->hard_links);
-		// free(ptr->owner);
-		// free(ptr->group);
-		// // free(ptr->name);
-		// // free(ptr->path);
-		// free(ptr->psize);
-		// free(ptr->pdate);
-
-
-	// free(ptr->owner);
-	// free(ptr->group);
-	// free(ptr->pdate);
-	// ptr->size = filestat.st_size;
-	// free(ptr->psize);
-	// ptr->psize = NULL;
-	// free(ptr->permissions);
-	// free(ptr->phard_links);
-
 		free(ptr->path);
 		past = ptr;
 		ptr = ptr->next;

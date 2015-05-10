@@ -30,7 +30,7 @@ void		ft_putsize_t(size_t n)
 	}
 }
 
-char	*ft_strrchr(const char *s, int c)
+char		*ft_strrchr(const char *s, int c)
 {
 	char	letter;
 	int		i;
