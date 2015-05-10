@@ -14,6 +14,24 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
+char	*ft_strrchr(const char *s, int c)
+{
+	char	letter;
+	int		i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	letter = (char)c;
+	while (i && s[i] != letter)
+	{
+		i--;
+	}
+	if (s[i] == letter)
+		return ((char *)s + i);
+	return (0);
+}
+
 char			*ft_linktodirpath(char *path, int mode)
 {
 	struct stat	statbuf;
@@ -47,16 +65,26 @@ void			ft_cleanpath(t_paths **paths, int *flags)
 	t_paths		*ptr;
 	t_paths		*past;
 	struct stat	statbuf;
+	char		*p;
 
 	ptr = *paths;
 	past = NULL;
 	while (ptr)
 	{
-		if (stat(ptr->path, &statbuf) == -1 && lstat(ptr->path, &statbuf) == -1)
-		{
+		*flags &= ~ERROR;
+		if ((p = ft_strrchr(ptr->path, '/')))
+			;
+		else
+			p = ptr->path;
+		if (ft_strlen(p) > 256)
 			*flags |= ERROR;
+		if (*flags & ERROR || (stat(ptr->path, &statbuf) == -1 && lstat(ptr->path, &statbuf) == -1))
+		{
 			write(2, "ls: ", 4), write(2, ptr->path, ft_strlen(ptr->path));
-			write(2, ": No such file or directory\n", 28);
+			if (*flags & ERROR)
+				write(2, ": File name too long\n", 21);
+			else
+				write(2, ": No such file or directory\n", 28);
 			free(ptr->path), free(ptr);
 			if (!past)
 				*paths = (*paths)->next,
@@ -64,6 +92,7 @@ void			ft_cleanpath(t_paths **paths, int *flags)
 			else
 				past->next = past->next->next,
 				ptr = past->next;
+			*flags |= ERROR;
 		}
 		else
 			past = ptr,
