@@ -29,6 +29,8 @@ FILES =	main.c	\
 		puts.c	\
 		first_tools.c	\
 		files_tools.c	\
+		flags_interact.c	\
+		launcher.c	\
 		free.c
 
 OBJECT = $(patsubst %.c,%.o,$(FILES))

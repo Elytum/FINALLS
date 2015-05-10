@@ -14,9 +14,9 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void			ft_fillflag(char p, int *flags)
+void		ft_fillflag(char p, int *flags)
 {
-	int			i;
+	int		i;
 
 	i = 0;
 	while (g_tuple[i].opt)
@@ -52,7 +52,7 @@ int			ft_getflags(char ***str)
 		}
 		p = *(*str)++ + 1;
 		while (*p)
-		{	
+		{
 			ft_fillflag(*p, &flags);
 			if (flags & ERROR)
 				return (flags);
@@ -62,7 +62,7 @@ int			ft_getflags(char ***str)
 	return (flags);
 }
 
-void			ft_testflags(int flags)
+void		ft_testflags(int flags)
 {
 	if (flags & LL_FLAG)
 		write(1, "l_Flag detected\n", 16);
