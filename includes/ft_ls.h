@@ -127,6 +127,8 @@ void				ft_put_onwork_value_loop(int n, char *path);
 void				ft_put_onwork_value(int n, char *path);
 void				ft_put_devices(char *major, char *minor, int len, char *ptr);
 void				ft_getlens(t_file *head, char lens[][7]);
+void				second_step_1(char **tmp, char **p, char lens[7], t_file *ptr);
+void				second_step_2(int flags, char *buff, t_file *ptr);
 #include "../includes/ft_ls.h"
 
 int				ft_cmpdate(t_file *s1, t_file *s2);

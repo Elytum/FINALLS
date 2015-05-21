@@ -102,6 +102,5 @@ void		ft_putfiles(t_file *head, int flags, t_times times)
 		if (lens[5] || lens[6])
 			lens[4] += lens[5] + lens[6] + 2;
 	}
-	ptr = head;
-	ft_bigbadassloop(flags, ptr, times, lens);
+	ft_bigbadassloop(flags, head, times, lens);
 }
