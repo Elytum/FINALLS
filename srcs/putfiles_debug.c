@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   putfiles_debug.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/11/15 04:49:41 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/25 22:54:45 by achazal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/ft_ls.h"
-#include <unistd.h>
 
 static void	first_step(t_file *ptr)
 {
@@ -9,8 +20,6 @@ static void	first_step(t_file *ptr)
 	else
 		write(1, "\n", 1);
 }
-
-
 
 static void	last_step(t_file *ptr, int flags)
 {
@@ -29,7 +38,8 @@ static void	ft_frees(int flags, char *buff, char *tmp)
 	free(buff);
 }
 
-static void	ft_bigbadassloop(int flags, t_file *ptr, t_times times, char lens[7])
+static void	ft_bigbadassloop(int flags, t_file *ptr,
+							t_times times, char lens[7])
 {
 	char	*tmp;
 	char	*buff;

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   putfiles.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/11/15 04:49:41 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/25 22:54:45 by achazal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <ft_ls.h>
 
 static void init_bigbadass(char **buff, char **tmp, int flags, char lens[7])
@@ -50,8 +62,8 @@ static void	parttwo(char *tmp, char *buff, char lens[7], t_file *ptr)
 	write(1, "\n", 1);
 }
 
-
-static void	ft_bigbadassloop(int flags, t_file *ptr, t_times times, char lens[7])
+static void	ft_bigbadassloop(int flags, t_file *ptr,
+				t_times times, char lens[7])
 {
 	char	*buff;
 	char	*tmp;
@@ -61,7 +73,8 @@ static void	ft_bigbadassloop(int flags, t_file *ptr, t_times times, char lens[7]
 	while (ptr)
 	{
 		if (S_ISREG(ptr->filestat.st_mode) || (S_ISLNK(ptr->filestat.st_mode)
-			&& (flags & LL_FLAG)) || ft_isnotlinktodir(ptr->path, ptr->filestat.st_mode))
+			&& (flags & LL_FLAG)) || ft_isnotlinktodir(ptr->path,
+				ptr->filestat.st_mode))
 		{
 			if (flags & LL_FLAG && !(flags & UC_FLAG))
 			{

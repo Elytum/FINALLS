@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   puts3.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/11/15 04:49:41 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/25 22:54:45 by achazal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <time.h>
 #include <unistd.h>
 #include <ft_ls.h>
@@ -42,21 +54,22 @@ void		ft_put_after(t_file *file, int flags)
 			write(1, "/", 1);
 }
 
-void				ft_put_onwork_owner(char *name, char *path)
+void		ft_put_onwork_owner(char *name, char *path)
 {
 	if (!name)
 		return ;
 	ft_strcpyo(path, name);
 }
 
-void				ft_put_onwork_group(char *group, char *path)
+void		ft_put_onwork_group(char *group, char *path)
 {
 	if (!group)
 		return ;
 	ft_strcpyo(path, group);
 }
 
-void				ft_put_onwork_time(BYPASS filestat, time_t date, t_times times, char *path)
+void		ft_put_onwork_time(BYPASS filestat,
+					time_t date, t_times times, char *path)
 {
 	if (date > times.timelimit && date <= time(NULL))
 		ft_strncpyo(path, ctime(&(filestat).st_mtime) + 4, 12);

@@ -61,6 +61,5 @@ void		ft_freefiles2(t_file **head, int flags)
 		past = ptr;
 		ptr = ptr->next;
 		free(past);
-
 	}
 }

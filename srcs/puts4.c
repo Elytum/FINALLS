@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   puts4.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/11/15 04:49:41 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/25 22:54:45 by achazal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <ft_ls.h>
 #define S_ISISVTX 0001000
 #define S_ISUID   0004000
@@ -9,7 +21,6 @@ static void			ft_first(mode_t var, char **path)
 {
 	if (var & S_ISISVTX)
 	{
-		
 		if (var & S_IWOTH || var & S_IROTH)
 		{
 			*(*path)-- = 't';
@@ -89,6 +100,6 @@ void				ft_put_onwork_permissions(mode_t var, char *path, char *p)
 		path--;
 	ft_first(var, &path);
 	ft_second(var, &path);
-	ft_third(var, &path);	
+	ft_third(var, &path);
 	ft_put_onwork_symbole(var, path);
 }

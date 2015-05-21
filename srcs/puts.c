@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   puts.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/11/15 04:49:41 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/25 22:54:45 by achazal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <ft_ls.h>
 
 static void			ft_getlens_init(char lens[][7])
@@ -34,8 +46,7 @@ void				ft_getlens(t_file *head, char lens[][7])
 	t_file			*ptr;
 	char			tmp;
 
-	ft_getlens_init(lens);
-	ptr = head;
+	ft_getlens_init(lens), ptr = head;
 	while (ptr)
 	{
 		begin_loop(lens, ptr);
@@ -59,7 +70,8 @@ void				ft_getlens(t_file *head, char lens[][7])
 	}
 }
 
-void		second_step_1(char **tmp, char **p, char lens[7], t_file *ptr)
+void				second_step_1(char **tmp, char **p,
+									char lens[7], t_file *ptr)
 {
 	ft_memset((*tmp), ' ', lens[4]);
 	(*p) = *tmp;
@@ -86,9 +98,9 @@ void		second_step_1(char **tmp, char **p, char lens[7], t_file *ptr)
 	*p += 2;
 }
 
-void		second_step_2(int flags, char *buff, t_file *ptr)
+void				second_step_2(int flags, char *buff, t_file *ptr)
 {
-	int		len;
+	int				len;
 
 	len = ft_strlen(ptr->name);
 	write(1, ptr->name, len);

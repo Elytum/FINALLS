@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   puts2.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: achazal <achazal@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2014/11/15 04:49:41 by achazal           #+#    #+#             */
+/*   Updated: 2014/11/25 22:54:45 by achazal          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <ft_ls.h>
 
 int				ft_isnotlinktodir(char *path, int mode)
@@ -5,8 +17,7 @@ int				ft_isnotlinktodir(char *path, int mode)
 	struct stat	statbuf;
 	char		*tmp;
 	int			i;
-
-	DIR		*dir;
+	DIR			*dir;
 
 	if (!S_ISLNK(mode))
 		return (0);
@@ -18,7 +29,7 @@ int				ft_isnotlinktodir(char *path, int mode)
 	return (1);
 }
 
-void				ft_put_onwork_symbole(mode_t var, char *path)
+void			ft_put_onwork_symbole(mode_t var, char *path)
 {
 	if (S_ISLNK(var))
 		*path = 'l';
@@ -36,7 +47,7 @@ void				ft_put_onwork_symbole(mode_t var, char *path)
 		*path = '-';
 }
 
-void				ft_put_onwork_value_loop(int n, char *path)
+void			ft_put_onwork_value_loop(int n, char *path)
 {
 	if (n >= 10)
 	{
@@ -47,7 +58,7 @@ void				ft_put_onwork_value_loop(int n, char *path)
 		*path-- = n + '0';
 }
 
-void				ft_put_onwork_value(int n, char *path)
+void			ft_put_onwork_value(int n, char *path)
 {
 	if (n == -2147483648)
 		ft_strcpyo(path, "-2147483648");
@@ -64,9 +75,9 @@ void				ft_put_onwork_value(int n, char *path)
 	}
 }
 
-void		ft_put_devices(char *major, char *minor, int len, char *ptr)
+void			ft_put_devices(char *major, char *minor, int len, char *ptr)
 {
-	char	*p;
+	char		*p;
 
 	p = minor;
 	while (*p)
