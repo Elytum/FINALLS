@@ -115,7 +115,18 @@ void				*ft_memset(void *b, int c, size_t len);
 char				*ft_strrchr(const char *s, int c);
 char				**ft_simple_extractpaths(t_file *head, int flags);
 void				ft_putsize_t(size_t n);
-
+void				ft_put_onwork_permissions(mode_t var, char *path, char *p);
+void				ft_put_permission_denied(char *path);
+void				ft_put_after(t_file *file, int flags);
+void				ft_put_onwork_owner(char *name, char *path);
+void				ft_put_onwork_group(char *group, char *path);
+void				ft_put_onwork_time(BYPASS filestat, time_t date, t_times times, char *path);
+int					ft_isnotlinktodir(char *path, int mode);
+void				ft_put_onwork_symbole(mode_t var, char *path);
+void				ft_put_onwork_value_loop(int n, char *path);
+void				ft_put_onwork_value(int n, char *path);
+void				ft_put_devices(char *major, char *minor, int len, char *ptr);
+void				ft_getlens(t_file *head, char lens[][7]);
 #include "../includes/ft_ls.h"
 
 int				ft_cmpdate(t_file *s1, t_file *s2);

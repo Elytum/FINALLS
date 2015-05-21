@@ -27,6 +27,12 @@ FILES =	main.c	\
 		comparisons.c	\
 		comparisons2.c	\
 		puts.c	\
+		puts2.c	\
+		puts3.c	\
+		puts4.c	\
+		puts5.c	\
+		putfiles.c \
+		putfiles_debug.c \
 		first_tools.c	\
 		files_tools.c	\
 		flags_interact.c	\
