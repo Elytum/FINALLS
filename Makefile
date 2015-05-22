@@ -6,7 +6,7 @@
 #    By: pfournet <pfournet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/03 11:54:29 by pfournet          #+#    #+#              #
-#    Updated: 2015/05/22 00:40:31 by achazal          ###   ########.fr        #
+#    Updated: 2015/05/22 02:29:54 by achazal          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #-Wall -Wextra -Werror 
@@ -62,3 +62,5 @@ fclean: clean
 		/bin/rm -Rf $(NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re
